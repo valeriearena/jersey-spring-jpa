@@ -1,0 +1,35 @@
+group 'jersey-spring-jpa'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile ('org.glassfish.jersey.ext:jersey-spring3:2.22.2'){
+        exclude group:'org.springframework'
+    }
+
+    compile 'org.springframework:spring-context:4.3.5.RELEASE'
+    compile 'org.springframework:spring-beans:4.3.5.RELEASE'
+    compile 'org.springframework:spring-core:4.3.5.RELEASE'
+    compile 'org.springframework:spring-web:4.3.5.RELEASE'
+    compile 'org.springframework:spring-tx:4.3.5.RELEASE'
+    compile 'org.springframework:spring-orm:4.3.5.RELEASE'
+
+    compile 'org.hibernate:hibernate-core:4.3.5.Final'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
+
+    compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.22.2'
+
+    compile 'org.slf4j:slf4j-api:1.7.20'
+    compile 'org.bouncycastle:bcprov-jdk16:1.46';
+
+    testCompile 'org.jmockit:jmockit:1.8'
+    testCompile 'junit:junit:4.12'
+}

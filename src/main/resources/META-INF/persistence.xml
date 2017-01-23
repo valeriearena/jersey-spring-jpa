@@ -1,0 +1,11 @@
+<persistence-unit name="heartbeatPersistenceUnit" transaction-type="RESOURCE_LOCAL">
+
+	<class>com.heartbeat.persistence.entity.PatientEntity</class>
+	<properties>
+		<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+		<property name="show_sql" value="true"/>
+	</properties>
+
+</persistence-unit>
+
+
