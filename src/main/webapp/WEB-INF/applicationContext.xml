@@ -21,7 +21,6 @@
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="heartbeatPersistenceUnit" />
         <property name="dataSource" ref="heartbeatDataSource" />
         <property name="packagesToScan" value="com.heartbeat" />
         <property name="jpaVendorAdapter">
