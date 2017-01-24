@@ -38,7 +38,7 @@ public class PatientResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPatient(@PathParam("patientId") int patientId) {
 
-        PatientEntity patientEntity = patientService.getPatient(patientId);
+        PatientEntity patientEntity = patientService.find(patientId);
 
         return Response.ok().entity(patientEntity).build();
     }

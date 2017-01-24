@@ -31,24 +31,36 @@ public class PatientCaregiverInternalResource extends ClinicalResource {
     }
 
     @GET
-    @Path("/internalCaregiver/{hospitalId}/{userId}")
+    @Path("/internalCaregiver/named/{hospitalId}/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByUserAndHospital(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId) {
+    public Response findByUserAndHospitalNamedQuery(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId) {
 
-        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByUserAndHospital(hospitalId,userId);
+        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByUserAndHospitalNamedQuery(hospitalId,userId);
 
         GenericEntity<List<PatientCaregiverInternalEntity>> list = new GenericEntity<List<PatientCaregiverInternalEntity>>(caregiverList) {};
         return Response.ok(list).build();
     }
 
     @GET
-    @Path("/internalCaregiver/{userId}")
+    @Path("/internalCaregiver/native/{hospitalId}/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findCaregiverIdByUser(@PathParam("userId") int userId) {
+    public Response findByUserAndHospitalDynamicQuery(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId) {
 
-        Integer id = patientCaregiverInternalService.findCaregiverIdByUser(userId);
+        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByUserAndHospitalDynamicQuery(hospitalId,userId);
+
+        GenericEntity<List<PatientCaregiverInternalEntity>> list = new GenericEntity<List<PatientCaregiverInternalEntity>>(caregiverList) {};
+        return Response.ok(list).build();
+    }
+
+    @GET
+    @Path("/internalCaregiver/native/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findCaregiverIdByUserDynamicQuery(@PathParam("userId") int userId) {
+
+        Integer id = patientCaregiverInternalService.findCaregiverIdByUserDynamicQuery(userId);
         return Response.ok().entity(id).build();
     }
 }
