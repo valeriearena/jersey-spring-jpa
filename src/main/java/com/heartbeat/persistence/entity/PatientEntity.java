@@ -1,17 +1,36 @@
 package com.heartbeat.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by valerie on 1/21/17.
  */
 @Entity
 @Table(name = "hb_patient")
+@NamedQueries({
+        @NamedQuery(name="PatientEntity.findByPatientName",
+                query="SELECT p FROM PatientEntity p WHERE p.patientName = :patientName"),
+        @NamedQuery(name="PatientEntity.findLabOrders",
+                query="SELECT p FROM PatientEntity p JOIN FETCH p.labOrders WHERE p.patientId = :patientId")
+})
 public class PatientEntity {
 
+    @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<PatientCaregiverInternalEntity> caregivers;
+
+    @JsonIgnore
+    @OneToMany(mappedBy="patientEntity", cascade=CascadeType.ALL)
+    private List<PatientLabOrders> labOrders;
+
+    @ManyToOne
+    @JoinColumn(name = "wardId")
+    private HierarchyEntity hierarchyEntity;
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer patientId;
     private String patientName;
     private String lastName;
@@ -22,7 +41,6 @@ public class PatientEntity {
     private Date dateOfBirth;
     private Integer gender;
     private Date creationDate;
-    private Integer wardId;
     private Integer active;
     private String patientNumber;
     private String hospitalPatientNumber;
@@ -37,6 +55,30 @@ public class PatientEntity {
     private Date lastKnownWell;
     private Date wardActivationDate;
     private Integer isConfidential;
+
+    public List<PatientCaregiverInternalEntity> getCaregivers() {
+        return caregivers;
+    }
+
+    public void setCaregivers(List<PatientCaregiverInternalEntity> caregivers) {
+        this.caregivers = caregivers;
+    }
+
+    public List<PatientLabOrders> getLabOrders() {
+        return labOrders;
+    }
+
+    public void setLabOrders(List<PatientLabOrders> labOrders) {
+        this.labOrders = labOrders;
+    }
+
+    public HierarchyEntity getHierarchyEntity() {
+        return hierarchyEntity;
+    }
+
+    public void setHierarchyEntity(HierarchyEntity hierarchyEntity) {
+        this.hierarchyEntity = hierarchyEntity;
+    }
 
     public Integer getPatientId() {
         return patientId;
@@ -116,14 +158,6 @@ public class PatientEntity {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
-    }
-
-    public Integer getWardId() {
-        return wardId;
-    }
-
-    public void setWardId(Integer wardId) {
-        this.wardId = wardId;
     }
 
     public Integer getActive() {
