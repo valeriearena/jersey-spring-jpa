@@ -16,10 +16,6 @@
 
     <jee:jndi-lookup id="heartbeatDataSource" jndi-name="java:comp/env/jdbc/heartbeatdb" expected-type="javax.sql.DataSource" resource-ref="true"/>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="heartbeatDataSource" />
         <property name="packagesToScan" value="com.heartbeat" />
@@ -32,5 +28,8 @@
         </property>
     </bean>
 
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
 </beans>
   

@@ -16,7 +16,6 @@ import java.util.List;
  * Created by valerie on 1/21/17.
  */
 @Service
-@Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
 public class PatientService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PatientService.class.getName());
@@ -28,15 +27,18 @@ public class PatientService {
     private UserDao userDao;
 
 
+    @Transactional(propagation= Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
     public PatientEntity find(int patientId){
 
         return patientDao.find(patientId);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
     public void persist(){
 
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updatePatient(int patientId){
 
         PatientEntity entity = patientDao.find(patientId);
@@ -44,19 +46,23 @@ public class PatientService {
         patientDao.merge(entity);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
     public void assignPatient(int patientId){
 
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
     public void delete(int patientId){
 
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
     public PatientEntity findByPatientName(String patientName){
 
         return patientDao.findByPatientName(patientName);
     }
 
+    @Transactional(propagation= Propagation.REQUIRED, readOnly = true, rollbackFor = Exception.class)
     public List<PatientEntity> findLabOrders(int patientId){
 
         return patientDao.findLabOrders(patientId);
