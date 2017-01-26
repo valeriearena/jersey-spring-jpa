@@ -21,56 +21,25 @@ import javax.persistence.*;
 })
 public class HierarchyEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinColumn(name = "parentId")
-    private HierarchyEntity parent;
-
     @Id
     private Integer levelId;
 
-    @Column(name="levelName")
     private String levelName;
-
-    @Column(name="levelType")
     private String levelType;
-
-    @Column(name="subType")
     private String subType;
-
-    @Column(name="abbreviation")
     private String abbreviation;
-
-    @Column(name="startIndex")
     private Integer startIndex;
-
-    @Column(name="endIndex")
     private Integer endIndex;
-
-    @Column(name="hospitalId")
     private Integer hospitalId;
-
-    @Column(name="colorCode")
     private String colorCode;
-
-    @Column(name="isActive")
     private Integer isActive;
-
-    @Column(name="massDischarge")
     private Integer massDischarge;
-
-    @Column(name="clientLicenseId")
     private String clientLicenseId;
-
-    @Column(name="deleted")
     private Integer deleted;
 
-    public HierarchyEntity getParent() {
-        return parent;
-    }
-
-    public void setParent(HierarchyEntity parent) {
-        this.parent = parent;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JoinColumn(name = "parentId")
+    private HierarchyEntity parent;
 
     public Integer getLevelId() {
         return levelId;
@@ -174,5 +143,13 @@ public class HierarchyEntity {
 
     public void setDeleted(Integer deleted) {
         this.deleted = deleted;
+    }
+
+    public HierarchyEntity getParent() {
+        return parent;
+    }
+
+    public void setParent(HierarchyEntity parent) {
+        this.parent = parent;
     }
 }

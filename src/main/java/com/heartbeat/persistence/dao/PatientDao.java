@@ -5,8 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 /**
  * Created by valerie on 1/22/17.
@@ -33,17 +31,7 @@ public class PatientDao{
         em.remove(entity);
     }
 
-    public PatientEntity findByPatientName(String patientName){
-        TypedQuery<PatientEntity> query  = em.createNamedQuery("PatientEntity.findByPatientName", PatientEntity.class);
-        query.setParameter("patientName",  patientName);
-        return query.getSingleResult();
+    public void throwRuntimeException(){
+        throw new RuntimeException("test");
     }
-
-
-    public List<PatientEntity> findLabOrders(int patientId){
-        TypedQuery<PatientEntity> query  = em.createNamedQuery("PatientEntity.findLabOrders", PatientEntity.class);
-        query.setParameter("patientId",  patientId);
-        return query.getResultList();
-    }
-
 }

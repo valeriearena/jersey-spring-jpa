@@ -3,10 +3,7 @@ package com.heartbeat.persistence.dao;
 import com.heartbeat.persistence.entity.PatientCaregiverInternalEntity;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -19,15 +16,14 @@ public class PatientCaregiverInternalDao {
     private EntityManager em;
 
     public List<PatientCaregiverInternalEntity>  findByUserAndHospitalNamedQuery(int hospitalId, int userId){
-        TypedQuery<PatientCaregiverInternalEntity> query  = em.createNamedQuery("PatientCaregiverInternalEntity.findByUserAndHospital", PatientCaregiverInternalEntity.class);
+        Query query  = em.createNamedQuery("PatientCaregiverInternalEntity.findByUserAndHospital");
         query.setParameter("hospitalId",  hospitalId);
         query.setParameter("userId",  userId);
         return query.getResultList();
     }
 
     public List<PatientCaregiverInternalEntity> findByUserAndHospitalDynamicQuery(int hospitalId, int userId){
-        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.SQL_GET_CAREGIVER_BY_USER_AND_HOSPITAL,
-                        PatientCaregiverInternalEntity.class);
+        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.SQL_GET_CAREGIVER_BY_USER_AND_HOSPITAL, PatientCaregiverInternalEntity.class);
         q.setParameter("hospitalId", hospitalId);
         q.setParameter("userId", userId);
         return q.getResultList();

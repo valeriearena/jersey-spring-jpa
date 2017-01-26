@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by valerie on 1/24/17.
  */
 @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id") //400 Bad Request: Jackson won't serialize self-ref
 @Entity
-@Table(name = "hb_patient_caregiver_internal", schema = "dbo", catalog = "heartbeat")
+@Table(name = "hb_patient_caregiver_internal")
 @NamedNativeQueries({
         @NamedNativeQuery(name="PatientCaregiverInternalEntity.findByUserAndHospital",
                 query="SELECT ci.id, ci.userId, ci.patientId, ci.thirdPartySource, ci.lastUpdated " +
@@ -26,7 +26,7 @@ import java.sql.Timestamp;
         name = "CaregiverMapping",
         entities = {
                 @EntityResult (entityClass = PatientCaregiverInternalEntity.class)
-        })
+})
 public class PatientCaregiverInternalEntity {
 
     public static final String SQL_GET_CAREGIVER_BY_USER_AND_HOSPITAL =
@@ -40,6 +40,13 @@ public class PatientCaregiverInternalEntity {
     public static final String SQL_GET_CAREGIVER_BY_USER =
             "SELECT id FROM hb_patient_caregiver_internal WHERE userId = :userId";
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer id;
+
+    private String thirdPartySource;
+    private Date lastUpdated = new Date();
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private UserEntity userEntity;
@@ -48,11 +55,6 @@ public class PatientCaregiverInternalEntity {
     @JoinColumn(name = "patientId")
     private PatientEntity patientEntity;
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
-    private String thirdPartySource;
-    private Timestamp lastUpdated;
 
     public Integer getId() {
         return id;
@@ -60,6 +62,22 @@ public class PatientCaregiverInternalEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getThirdPartySource() {
+        return thirdPartySource;
+    }
+
+    public void setThirdPartySource(String thirdPartySource) {
+        this.thirdPartySource = thirdPartySource;
+    }
+
+    public Date getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(Date lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public UserEntity getUserEntity() {
@@ -78,20 +96,5 @@ public class PatientCaregiverInternalEntity {
         this.patientEntity = patientEntity;
     }
 
-    public String getThirdPartySource() {
-        return thirdPartySource;
-    }
-
-    public void setThirdPartySource(String thirdPartySource) {
-        this.thirdPartySource = thirdPartySource;
-    }
-
-    public Timestamp getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(Timestamp lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
 
 }

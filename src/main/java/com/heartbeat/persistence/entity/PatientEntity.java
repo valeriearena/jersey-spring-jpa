@@ -1,7 +1,5 @@
 package com.heartbeat.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -11,27 +9,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "hb_patient")
-@NamedQueries({
-        @NamedQuery(name="PatientEntity.findByPatientName",
-                query="SELECT p FROM PatientEntity p WHERE p.patientName = :patientName"),
-        @NamedQuery(name="PatientEntity.findLabOrders",
-                query="SELECT p FROM PatientEntity p JOIN FETCH p.labOrders WHERE p.patientId = :patientId")
-})
 public class PatientEntity {
-
-    @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<PatientCaregiverInternalEntity> caregivers;
-
-    @JsonIgnore
-    @OneToMany(mappedBy="patientEntity", cascade=CascadeType.ALL)
-    private List<PatientLabOrders> labOrders;
-
-    @ManyToOne
-    @JoinColumn(name = "wardId")
-    private HierarchyEntity hierarchyEntity;
 
     @Id
     private Integer patientId;
+
     private String patientName;
     private String lastName;
     private String firstName;
@@ -56,29 +38,12 @@ public class PatientEntity {
     private Date wardActivationDate;
     private Integer isConfidential;
 
-    public List<PatientCaregiverInternalEntity> getCaregivers() {
-        return caregivers;
-    }
+    @ManyToOne
+    @JoinColumn(name = "wardId")
+    private HierarchyEntity hierarchyEntity;
 
-    public void setCaregivers(List<PatientCaregiverInternalEntity> caregivers) {
-        this.caregivers = caregivers;
-    }
-
-    public List<PatientLabOrders> getLabOrders() {
-        return labOrders;
-    }
-
-    public void setLabOrders(List<PatientLabOrders> labOrders) {
-        this.labOrders = labOrders;
-    }
-
-    public HierarchyEntity getHierarchyEntity() {
-        return hierarchyEntity;
-    }
-
-    public void setHierarchyEntity(HierarchyEntity hierarchyEntity) {
-        this.hierarchyEntity = hierarchyEntity;
-    }
+    @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private List<PatientCaregiverInternalEntity> caregivers;
 
     public Integer getPatientId() {
         return patientId;
@@ -271,4 +236,21 @@ public class PatientEntity {
     public void setIsConfidential(Integer isConfidential) {
         this.isConfidential = isConfidential;
     }
+
+    public HierarchyEntity getHierarchyEntity() {
+        return hierarchyEntity;
+    }
+
+    public void setHierarchyEntity(HierarchyEntity hierarchyEntity) {
+        this.hierarchyEntity = hierarchyEntity;
+    }
+
+    public List<PatientCaregiverInternalEntity> getCaregivers() {
+        return caregivers;
+    }
+
+    public void setCaregivers(List<PatientCaregiverInternalEntity> caregivers) {
+        this.caregivers = caregivers;
+    }
+
 }

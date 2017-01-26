@@ -8,6 +8,7 @@ import com.heartbeat.clientApi.vo.InjectedRequestDataFactory;
 import com.heartbeat.resource.HierarchyResource;
 import com.heartbeat.resource.PatientCaregiverInternalResource;
 import com.heartbeat.resource.PatientResource;
+import com.heartbeat.service.AssignmentService;
 import org.glassfish.hk2.api.PerLookup;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -48,6 +49,8 @@ public class MHResourceConfig extends ResourceConfig
         register(Demo1Resource.class);
         register(Demo2Resource.class);
 
+        register(AssignmentService.class);
+        register(AssignmentService.class);
         register(PatientResource.class);
         register(HierarchyResource.class);
         register(PatientCaregiverInternalResource.class);

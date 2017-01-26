@@ -1,22 +1,34 @@
 package com.heartbeat.persistence.entity;
 
-import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by valerie on 1/24/17.
  */
 @Entity
-@Table(name = "hb_audit_trail", schema = "dbo", catalog = "heartbeat")
+@Table(name = "hb_audit_trail")
 public class AuditTrailEntity {
 
+    public enum AuditTrailEnum{
+        UPDATE_PATIENT;
+    }
+
+    @Id
+    @Column(name = "trailId")
     private int trailId;
+
+    @Column(name = "userName")
     private String userName;
+
     private String roleName;
     private int patientId;
     private int wardId;
-    private Timestamp updateTime;
-    private String actionName;
+    private Date updateTime = new Date();
+    private AuditTrailEnum actionName;
     private String actionValue1;
     private String actionValue2;
     private String actionValue3;
@@ -24,8 +36,6 @@ public class AuditTrailEntity {
     private String actionValue5;
     private String actionValue6;
 
-    @Id
-    @Column(name = "trailId")
     public int getTrailId() {
         return trailId;
     }
@@ -34,8 +44,6 @@ public class AuditTrailEntity {
         this.trailId = trailId;
     }
 
-    @Basic(fetch = FetchType.EAGER)
-    @Column(name = "userName")
     public String getUserName() {
         return userName;
     }
@@ -44,8 +52,6 @@ public class AuditTrailEntity {
         this.userName = userName;
     }
 
-    @Basic
-    @Column(name = "roleName")
     public String getRoleName() {
         return roleName;
     }
@@ -54,8 +60,6 @@ public class AuditTrailEntity {
         this.roleName = roleName;
     }
 
-    @Basic
-    @Column(name = "patientId")
     public int getPatientId() {
         return patientId;
     }
@@ -64,8 +68,6 @@ public class AuditTrailEntity {
         this.patientId = patientId;
     }
 
-    @Basic
-    @Column(name = "wardId")
     public int getWardId() {
         return wardId;
     }
@@ -74,28 +76,22 @@ public class AuditTrailEntity {
         this.wardId = wardId;
     }
 
-    @Basic
-    @Column(name = "updateTime")
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
-    @Basic
-    @Column(name = "actionName")
-    public String getActionName() {
+    public AuditTrailEnum getActionName() {
         return actionName;
     }
 
-    public void setActionName(String actionName) {
+    public void setActionName(AuditTrailEnum actionName) {
         this.actionName = actionName;
     }
 
-    @Basic
-    @Column(name = "actionValue1")
     public String getActionValue1() {
         return actionValue1;
     }
@@ -104,8 +100,6 @@ public class AuditTrailEntity {
         this.actionValue1 = actionValue1;
     }
 
-    @Basic
-    @Column(name = "actionValue2")
     public String getActionValue2() {
         return actionValue2;
     }
@@ -114,8 +108,6 @@ public class AuditTrailEntity {
         this.actionValue2 = actionValue2;
     }
 
-    @Basic
-    @Column(name = "actionValue3")
     public String getActionValue3() {
         return actionValue3;
     }
@@ -124,8 +116,6 @@ public class AuditTrailEntity {
         this.actionValue3 = actionValue3;
     }
 
-    @Basic
-    @Column(name = "actionValue4")
     public String getActionValue4() {
         return actionValue4;
     }
@@ -134,8 +124,6 @@ public class AuditTrailEntity {
         this.actionValue4 = actionValue4;
     }
 
-    @Basic
-    @Column(name = "actionValue5")
     public String getActionValue5() {
         return actionValue5;
     }
@@ -144,55 +132,11 @@ public class AuditTrailEntity {
         this.actionValue5 = actionValue5;
     }
 
-    @Basic
-    @Column(name = "actionValue6")
     public String getActionValue6() {
         return actionValue6;
     }
 
     public void setActionValue6(String actionValue6) {
         this.actionValue6 = actionValue6;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AuditTrailEntity that = (AuditTrailEntity) o;
-
-        if (trailId != that.trailId) return false;
-        if (patientId != that.patientId) return false;
-        if (wardId != that.wardId) return false;
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
-        if (roleName != null ? !roleName.equals(that.roleName) : that.roleName != null) return false;
-        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
-        if (actionName != null ? !actionName.equals(that.actionName) : that.actionName != null) return false;
-        if (actionValue1 != null ? !actionValue1.equals(that.actionValue1) : that.actionValue1 != null) return false;
-        if (actionValue2 != null ? !actionValue2.equals(that.actionValue2) : that.actionValue2 != null) return false;
-        if (actionValue3 != null ? !actionValue3.equals(that.actionValue3) : that.actionValue3 != null) return false;
-        if (actionValue4 != null ? !actionValue4.equals(that.actionValue4) : that.actionValue4 != null) return false;
-        if (actionValue5 != null ? !actionValue5.equals(that.actionValue5) : that.actionValue5 != null) return false;
-        if (actionValue6 != null ? !actionValue6.equals(that.actionValue6) : that.actionValue6 != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = trailId;
-        result = 31 * result + (userName != null ? userName.hashCode() : 0);
-        result = 31 * result + (roleName != null ? roleName.hashCode() : 0);
-        result = 31 * result + patientId;
-        result = 31 * result + wardId;
-        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
-        result = 31 * result + (actionName != null ? actionName.hashCode() : 0);
-        result = 31 * result + (actionValue1 != null ? actionValue1.hashCode() : 0);
-        result = 31 * result + (actionValue2 != null ? actionValue2.hashCode() : 0);
-        result = 31 * result + (actionValue3 != null ? actionValue3.hashCode() : 0);
-        result = 31 * result + (actionValue4 != null ? actionValue4.hashCode() : 0);
-        result = 31 * result + (actionValue5 != null ? actionValue5.hashCode() : 0);
-        result = 31 * result + (actionValue6 != null ? actionValue6.hashCode() : 0);
-        return result;
     }
 }

@@ -22,6 +22,8 @@ dependencies {
     compile 'org.springframework:spring-tx:4.3.5.RELEASE'
     compile 'org.springframework:spring-orm:4.3.5.RELEASE'
 
+    compile 'org.springframework.data:spring-data-jpa:1.10.6.RELEASE'
+
     compile 'org.hibernate:hibernate-core:4.3.5.Final'
     compile 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
 

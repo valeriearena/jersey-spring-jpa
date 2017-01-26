@@ -1,5 +1,7 @@
 package com.heartbeat.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -9,17 +11,16 @@ import java.util.List;
  */
 @Entity
 @Table(name = "hb_user")
+@NamedQueries({
+        @NamedQuery(name="UserEntity.findByUserName", query="SELECT u FROM UserEntity u WHERE u.userName = :userName"),
+        @NamedQuery(name="UserEntity.findAssignments", query="SELECT u FROM UserEntity u JOIN FETCH u.assignments WHERE u.userId = :userId"),
+        @NamedQuery(name="UserEntity.findCount", query="SELECT COUNT(u) FROM UserEntity u WHERE u.userName LIKE :likeUserName")
+})
 public class UserEntity {
-
-    @OneToMany(mappedBy="userEntity", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    private List<PatientCaregiverInternalEntity> caregivers;
-
-    @ManyToOne
-    @JoinColumn(name = "hospitalId")
-    private HierarchyEntity hierarchyEntity;
 
     @Id
     private Integer userId;
+
     private String userName;
     private String imId;
     private String password;
@@ -58,21 +59,13 @@ public class UserEntity {
     private String department;
     private String company;
 
-    public List<PatientCaregiverInternalEntity> getCaregivers() {
-        return caregivers;
-    }
+    @ManyToOne
+    @JoinColumn(name = "hospitalId")
+    private HierarchyEntity hierarchyEntity;
 
-    public void setCaregivers(List<PatientCaregiverInternalEntity> caregivers) {
-        this.caregivers = caregivers;
-    }
-
-    public HierarchyEntity getHierarchyEntity() {
-        return hierarchyEntity;
-    }
-
-    public void setHierarchyEntity(HierarchyEntity hierarchyEntity) {
-        this.hierarchyEntity = hierarchyEntity;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy="userEntity", cascade=CascadeType.ALL)
+    private List<PatientCaregiverInternalEntity> assignments;
 
     public Integer getUserId() {
         return userId;
@@ -376,5 +369,21 @@ public class UserEntity {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public HierarchyEntity getHierarchyEntity() {
+        return hierarchyEntity;
+    }
+
+    public void setHierarchyEntity(HierarchyEntity hierarchyEntity) {
+        this.hierarchyEntity = hierarchyEntity;
+    }
+
+    public List<PatientCaregiverInternalEntity> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<PatientCaregiverInternalEntity> assignments) {
+        this.assignments = assignments;
     }
 }
