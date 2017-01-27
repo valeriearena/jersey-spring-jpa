@@ -31,70 +31,51 @@ public class AssignmentService {
     @Autowired
     private AuditTrailDao auditTrailDao;
 
-    @Transactional(propagation= Propagation.REQUIRED)
-    public boolean assignPatient(int userId, int patientId){
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void assignPatient(int userId, int patientId) {
 
-        try {
+        UserEntity userEntity = userDao.find(userId);
+        PatientEntity patientEntity = patientDao.find(patientId);
 
-            UserEntity userEntity = userDao.find(userId);
-            PatientEntity patientEntity = patientDao.find(patientId);
+        PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+        caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
 
-            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
-            caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+        caregiverEntity.setUserEntity(userEntity);
+        caregiverEntity.setPatientEntity(patientEntity);
 
-            caregiverEntity.setUserEntity(userEntity);
-            caregiverEntity.setPatientEntity(patientEntity);
+        caregiverInternalDao.persist(caregiverEntity);
 
-            caregiverInternalDao.persist(caregiverEntity);
-
-            AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
-            auditTrailDao.persist(auditTrailEntity);
-
-            return true;
-        }
-        catch (RuntimeException e) {
-            e.printStackTrace();
-            return false;
-        }
-
+        AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
+        auditTrailDao.persist(auditTrailEntity);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
-    public boolean unassignPatient(int userId, int patientId){
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void unassignPatient(int userId, int patientId) {
 
-        try {
-            UserEntity userEntity = userDao.find(userId);
-            PatientEntity patientEntity = patientDao.find(patientId);
+        UserEntity userEntity = userDao.find(userId);
+        PatientEntity patientEntity = patientDao.find(patientId);
 
-            for (PatientCaregiverInternalEntity caregiverInternalEntity : patientEntity.getCaregivers()) {
-                if (caregiverInternalEntity.getUserEntity().getUserId() == userId) {
-                    userEntity.getAssignments().remove(caregiverInternalEntity);
-                    userDao.merge(userEntity);
-                    userDao.flush();
+        for (PatientCaregiverInternalEntity caregiverInternalEntity : patientEntity.getCaregivers()) {
+            if (caregiverInternalEntity.getUserEntity().getUserId() == userId) {
+                userEntity.getAssignments().remove(caregiverInternalEntity);
+                userDao.merge(userEntity);
+                userDao.flush();
 
-                    //patientEntity.getCaregivers().remove(caregiverInternalEntity);
-                    //patientDao.merge(patientEntity);
+                //patientEntity.getCaregivers().remove(caregiverInternalEntity);
+                //patientDao.merge(patientEntity);
 
-                    //caregiverInternalDao.remove(caregiverInternalEntity);
-                    //caregiverInternalDao.merge(patientEntity);
+                //caregiverInternalDao.remove(caregiverInternalEntity);
+                //caregiverInternalDao.merge(patientEntity);
 
-                    AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
-                    auditTrailDao.persist(auditTrailEntity);
+                AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
+                auditTrailDao.persist(auditTrailEntity);
 
-                    break;
-                }
+                break;
             }
-
-
-            return true;
-        }
-        catch (RuntimeException e) {
-            e.printStackTrace();
-            return false;
         }
     }
 
-    private AuditTrailEntity buildAudit(UserEntity userEntity, PatientEntity patientEntity, AuditTrailEntity.AuditTrailEnum action){
+    private AuditTrailEntity buildAudit(UserEntity userEntity, PatientEntity patientEntity, AuditTrailEntity.AuditTrailEnum action) {
 
         AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
         auditTrailEntity.setActionName(action);

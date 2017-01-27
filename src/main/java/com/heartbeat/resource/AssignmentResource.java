@@ -33,11 +33,14 @@ public class AssignmentResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId) {
 
-        boolean success = assignmentService.assignPatient(userId, patientId);
-
-        if(!success)return Response.status(Response.Status.CONFLICT).build();
-
-        return Response.ok().build();
+        try {
+            assignmentService.assignPatient(userId, patientId);
+            return Response.ok().build();
+        }
+        catch (RuntimeException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 
     @PUT
@@ -46,11 +49,14 @@ public class AssignmentResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response unassignPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId) {
 
-        boolean success = assignmentService.unassignPatient(userId, patientId);
-
-        if(!success)return Response.status(Response.Status.CONFLICT).build();
-
-        return Response.ok().build();
+        try {
+            assignmentService.unassignPatient(userId, patientId);
+            return Response.ok().build();
+        }
+        catch (RuntimeException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 
 }
