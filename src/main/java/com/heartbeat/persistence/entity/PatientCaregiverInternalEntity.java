@@ -20,24 +20,21 @@ import java.util.Date;
                         "JOIN hb_patient p ON ci.patientId = p.patientId " +
                         "JOIN hb_hierarchy h ON p.wardId = h.levelId " +
                         "WHERE h.hospitalId = :hospitalId AND ci.userId = :userId",
-                resultSetMapping = "CaregiverMapping")
-})
-@SqlResultSetMapping(
-        name = "CaregiverMapping",
-        entities = {
-                @EntityResult (entityClass = PatientCaregiverInternalEntity.class)
+                resultClass = PatientCaregiverInternalEntity.class)
 })
 public class PatientCaregiverInternalEntity {
 
-    public static final String SQL_GET_CAREGIVER_BY_USER_AND_HOSPITAL =
+    public static final String CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "PatientCaregiverInternalEntity.findByUserAndHospital";
+
+    public static final String CAREGIVER_FIND_BY_HOSPITAL =
             "SELECT ci.id, ci.userId, ci.patientId, ci.thirdPartySource, ci.lastUpdated " +
                     "FROM hb_patient_caregiver_internal ci " +
                     "JOIN hb_user u ON ci.userId = u.userId " +
                     "JOIN hb_patient p ON ci.patientId = p.patientId " +
                     "JOIN hb_hierarchy h ON p.wardId = h.levelId " +
-                    "WHERE h.hospitalId = :hospitalId AND ci.userId = :userId";
+                    "WHERE h.hospitalId = :hospitalId";
 
-    public static final String SQL_GET_CAREGIVER_BY_USER =
+    public static final String CAREGIVER_FIND_BY_USER =
             "SELECT id FROM hb_patient_caregiver_internal WHERE userId = :userId";
 
     @Id

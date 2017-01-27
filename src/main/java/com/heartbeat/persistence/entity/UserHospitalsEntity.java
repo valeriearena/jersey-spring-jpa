@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 })
 public class UserHospitalsEntity {
 
+    public static final String USER_HOSPITALS_FIND_ASSICIATED_HOSPITALS = "UserHospitalsEntity.findAssociatedHospitals";
+
     @Id
     @ManyToOne
     @JoinColumn(name = "hospitalId")

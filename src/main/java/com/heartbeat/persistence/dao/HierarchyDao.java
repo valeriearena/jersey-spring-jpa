@@ -1,12 +1,14 @@
 package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.HierarchyEntity;
-import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -14,6 +16,8 @@ import java.util.List;
  */
 @Repository
 public class HierarchyDao {
+
+    private static final String SQL = "HierarchyEntity.findRootHierarchy";
 
     @PersistenceContext
     private EntityManager em;
@@ -40,19 +44,19 @@ public class HierarchyDao {
 
     @Transactional(propagation= Propagation.REQUIRED, readOnly = true)
     public List<HierarchyEntity> findAll(){
-        Query query  = em.createNamedQuery("HierarchyEntity.findAll");
+        Query query  = em.createNamedQuery(HierarchyEntity.HIERARCHY_FIND_ALL);
         return query.getResultList();
     }
 
     @Transactional(propagation= Propagation.REQUIRED, readOnly = true)
     public List<HierarchyEntity> findRootHierarchy(){
-        TypedQuery<HierarchyEntity> query  = em.createNamedQuery("HierarchyEntity.findRootHierarchy", HierarchyEntity.class);
+        TypedQuery<HierarchyEntity> query  = em.createNamedQuery(HierarchyEntity.HIERARCHY_FIND_ROOT, HierarchyEntity.class);
         return query.getResultList();
     }
 
 
     public List<HierarchyEntity> findHierarchyImmediateChildren(int parentId){
-        TypedQuery<HierarchyEntity> query  = em.createNamedQuery("HierarchyEntity.findHierarchyImmediateChildren", HierarchyEntity.class);
+        TypedQuery<HierarchyEntity> query  = em.createNamedQuery(HierarchyEntity.HIERARCY_FIND_CHILDREN, HierarchyEntity.class);
         query.setParameter("parentId",  parentId);
         return query.getResultList();
     }

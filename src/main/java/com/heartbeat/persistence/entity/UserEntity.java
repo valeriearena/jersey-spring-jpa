@@ -10,13 +10,17 @@ import java.util.List;
  * Created by valerie on 1/24/17.
  */
 @Entity
-@Table(name = "hb_user", schema = "dbo", catalog = "heartbeat")
+@Table(name = "hb_user")
 @NamedQueries({
         @NamedQuery(name="UserEntity.findByUserName", query="SELECT u FROM UserEntity u WHERE u.userName = :userName"),
         @NamedQuery(name="UserEntity.findAssignments", query="SELECT u FROM UserEntity u JOIN FETCH u.assignments WHERE u.userId = :userId"),
         @NamedQuery(name="UserEntity.findCount", query="SELECT COUNT(u) FROM UserEntity u WHERE u.userName LIKE :likeUserName")
 })
 public class UserEntity {
+
+    public static final String USER_FIND_BY_USER_NAME = "UserEntity.findByUserName";
+    public static final String USER_FIND_ASSIGNMENTS = "UserEntity.findAssignments";
+    public static final String USER_FIND_COUNT = "UserEntity.findCount";
 
     @Id
     private Integer userId;

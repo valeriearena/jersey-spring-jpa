@@ -35,19 +35,19 @@ public class UserDao {
 
     public Integer findUserCount(String likeUserName){
 
-        Query query = em.createNamedQuery("UserEntity.findCount");
+        Query query = em.createNamedQuery(UserEntity.USER_FIND_COUNT);
         query.setParameter("likeUserName",  likeUserName + "%");
         return ((Long)query.getSingleResult()).intValue();
     }
 
     public UserEntity findByUserName(String userName){
-        TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findByUserName", UserEntity.class);
+        TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_BY_USER_NAME, UserEntity.class);
         query.setParameter("userName",  userName);
         return query.getSingleResult();
     }
 
     public UserEntity findAssignments(int userId){
-        TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findAssignments", UserEntity.class);
+        TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_ASSIGNMENTS, UserEntity.class);
         query.setParameter("userId",  userId);
         return query.getSingleResult();
     }

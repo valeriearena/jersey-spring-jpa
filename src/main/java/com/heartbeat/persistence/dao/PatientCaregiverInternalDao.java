@@ -40,21 +40,20 @@ public class PatientCaregiverInternalDao {
     }
 
     public List<PatientCaregiverInternalEntity>  findByUserAndHospitalNamedQuery(int hospitalId, int userId){
-        Query query  = em.createNamedQuery("PatientCaregiverInternalEntity.findByUserAndHospital");
+        Query query  = em.createNamedQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_USER_AND_HOSPITAL);
         query.setParameter("hospitalId",  hospitalId);
         query.setParameter("userId",  userId);
         return query.getResultList();
     }
 
-    public List<PatientCaregiverInternalEntity> findByUserAndHospitalDynamicQuery(int hospitalId, int userId){
-        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.SQL_GET_CAREGIVER_BY_USER_AND_HOSPITAL, PatientCaregiverInternalEntity.class);
+    public List<PatientCaregiverInternalEntity> findByHospitalDynamicQuery(int hospitalId){
+        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_HOSPITAL, PatientCaregiverInternalEntity.class);
         q.setParameter("hospitalId", hospitalId);
-        q.setParameter("userId", userId);
         return q.getResultList();
     }
 
     public Integer findCaregiverIdByUserDynamicQuery(int userId){
-        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.SQL_GET_CAREGIVER_BY_USER);
+        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_USER);
         q.setParameter("userId", userId);
         return (Integer) q.getSingleResult();
     }

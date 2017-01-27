@@ -22,7 +22,7 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="heartbeatDataSource" />
-        <property name="packagesToScan" value="com.heartbeat.persistence" />
+        <property name="packagesToScan" value="com.heartbeat.persistence"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="database" value="SQL_SERVER" />
@@ -33,6 +33,6 @@
 
     <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
-    <jpa:repositories base-package="com.heartbeat.persistence.repository" />
+    <!--<jpa:repositories base-package="com.heartbeat.persistence.repository" />-->
 </beans>
   
