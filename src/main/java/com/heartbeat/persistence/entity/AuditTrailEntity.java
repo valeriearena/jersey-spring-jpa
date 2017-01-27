@@ -1,9 +1,6 @@
 package com.heartbeat.persistence.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -18,17 +15,20 @@ public class AuditTrailEntity {
     }
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "trailId")
     private int trailId;
 
     @Column(name = "userName")
     private String userName;
 
+    @Enumerated(EnumType.STRING)
+    private AuditTrailEnum actionName;
+
     private String roleName;
     private int patientId;
     private int wardId;
     private Date updateTime = new Date();
-    private AuditTrailEnum actionName;
     private String actionValue1;
     private String actionValue2;
     private String actionValue3;

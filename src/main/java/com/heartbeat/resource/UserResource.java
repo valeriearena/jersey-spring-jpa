@@ -43,6 +43,17 @@ public class UserResource extends ClinicalResource {
         return Response.ok().entity(userEntity).build();
     }
 
+    @GET
+    @Path("/user/byName/{userName}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserByName(@PathParam("userName") String userName) {
+
+        UserEntity userEntity = userService.findByUserName(userName);
+
+        return Response.ok().entity(userEntity).build();
+    }
+
     @PUT
     @Path("/user/onbreak/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -63,17 +74,6 @@ public class UserResource extends ClinicalResource {
         userService.updateUserOffBreak(userId);
 
         return Response.ok().build();
-    }
-
-    @GET
-    @Path("/user/byName/{userName}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserByName(@PathParam("userName") String userName) {
-
-        UserEntity userEntity = userService.findByUserName(userName);
-
-        return Response.ok().entity(userEntity).build();
     }
 
     @GET

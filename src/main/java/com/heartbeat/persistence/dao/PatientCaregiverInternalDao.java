@@ -2,8 +2,6 @@ package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.PatientCaregiverInternalEntity;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,22 +17,18 @@ public class PatientCaregiverInternalDao {
     @PersistenceContext
     private EntityManager em;
 
-    @Transactional(propagation= Propagation.REQUIRED, readOnly = true)
     public PatientCaregiverInternalEntity find(Integer levelId) {
         return em.find(PatientCaregiverInternalEntity.class, levelId);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
     public void persist(PatientCaregiverInternalEntity entity){
         em.persist(entity);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED, rollbackFor = Exception.class)
     public void merge(PatientCaregiverInternalEntity entity){
         em.merge(entity);
     }
 
-    @Transactional(propagation= Propagation.REQUIRED)
     public void remove(PatientCaregiverInternalEntity entity){
         em.remove(entity);
     }

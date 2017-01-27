@@ -39,8 +39,9 @@ public class UserService {
     public void updateUserOffBreak(int userId) {
 
         UserEntity userEntity = userDao.find(userId);
-        userEntity.setCustomOnlineStatusMessage("OFF BREAK");
+        userEntity.setCustomOnlineStatusMessage("");
 
+        userDao.merge(userEntity);
     }
 
     public UserEntity findByUserName(String userName) {

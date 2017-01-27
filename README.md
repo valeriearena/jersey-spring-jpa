@@ -13,3 +13,14 @@ http://localhost:8080/jersey-spring-jpa/icapi/clinical/internalCaregiver/dynamic
 
 Patient Resource <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/patient/17 <br/>
+
+User Resource <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/byId/12 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/byName/val1 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/onbreak/12 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/offbreak/12 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/count/val <br/>
+
+Assignment Resource <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/assign/12/18 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/unassign/12/18 <br/>

@@ -2,6 +2,8 @@ package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,10 +14,15 @@ import javax.persistence.TypedQuery;
  * Created by valerie on 1/26/17.
  */
 @Repository
+@Transactional(propagation= Propagation.REQUIRED)
 public class UserDao {
 
     @PersistenceContext
     private EntityManager em;
+
+    public void flush(){
+        em.flush();
+    }
 
     public UserEntity find(Integer id) {
         return em.find(UserEntity.class, id);

@@ -10,8 +10,8 @@ import com.heartbeat.persistence.entity.PatientEntity;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Iterator;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by valerie on 1/26/17.
@@ -31,70 +31,24 @@ public class AssignmentService {
     @Autowired
     private AuditTrailDao auditTrailDao;
 
-    public void assignPatient(int userId, int patientId){
-
-        UserEntity userEntity = userDao.find(userId);
-        PatientEntity patientEntity = patientDao.find(patientId);
-
-        PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
-        caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
-
-        caregiverEntity.setUserEntity(userEntity);
-        caregiverEntity.setPatientEntity(patientEntity);
-
-        caregiverInternalDao.persist(caregiverEntity);
-
-        AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
-        auditTrailEntity.setActionName(AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
-        auditTrailEntity.setUserName(userEntity.getUserName());
-        auditTrailEntity.setRoleName(userEntity.getRoleName());
-        auditTrailEntity.setPatientId(patientEntity.getPatientId());
-        auditTrailEntity.setWardId(patientEntity.getHierarchyEntity().getLevelId());
-        auditTrailEntity.setActionValue1(patientEntity.getPatientName());
-        auditTrailDao.persist(auditTrailEntity);
-
-    }
-
-    public void unassignPatient(int userId, int patientId){
-
-        UserEntity userEntity = userDao.find(userId);
-        PatientEntity patientEntity = patientDao.find(patientId);
-
-        Iterator<PatientCaregiverInternalEntity> iterator = patientEntity.getCaregivers().iterator();
-        PatientCaregiverInternalEntity caregiverToUnassign = null;
-
-        while (iterator.hasNext()){
-            caregiverToUnassign = iterator.next();
-            if(iterator.next().getUserEntity().getUserId() == userId){
-                //iterator.remove();
-                break;
-            }
-        }
-        caregiverInternalDao.remove(caregiverToUnassign);
-
-        AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
-        auditTrailEntity.setActionName(AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
-        auditTrailEntity.setUserName(userEntity.getUserName());
-        auditTrailEntity.setRoleName(userEntity.getRoleName());
-        auditTrailEntity.setPatientId(patientEntity.getPatientId());
-        auditTrailEntity.setWardId(patientEntity.getHierarchyEntity().getLevelId());
-        auditTrailEntity.setActionValue1(patientEntity.getPatientName());
-        auditTrailDao.persist(auditTrailEntity);
-    }
-
-    public boolean throwPersistenceExceptionExample(int userId, int patientId){
+    @Transactional(propagation= Propagation.REQUIRED)
+    public boolean assignPatient(int userId, int patientId){
 
         try {
 
             UserEntity userEntity = userDao.find(userId);
-            userEntity.setFirstName("test");
-            userDao.merge(userEntity);
-
             PatientEntity patientEntity = patientDao.find(patientId);
-            patientEntity.setFirstName("test");
-            patientDao.merge(patientEntity);
 
-            patientDao.throwRuntimeException();
+            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+            caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+
+            caregiverEntity.setUserEntity(userEntity);
+            caregiverEntity.setPatientEntity(patientEntity);
+
+            caregiverInternalDao.persist(caregiverEntity);
+
+            AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
+            auditTrailDao.persist(auditTrailEntity);
 
             return true;
         }
@@ -104,4 +58,53 @@ public class AssignmentService {
         }
 
     }
+
+    @Transactional(propagation= Propagation.REQUIRED)
+    public boolean unassignPatient(int userId, int patientId){
+
+        try {
+            UserEntity userEntity = userDao.find(userId);
+            PatientEntity patientEntity = patientDao.find(patientId);
+
+            for (PatientCaregiverInternalEntity caregiverInternalEntity : patientEntity.getCaregivers()) {
+                if (caregiverInternalEntity.getUserEntity().getUserId() == userId) {
+                    userEntity.getAssignments().remove(caregiverInternalEntity);
+                    userDao.merge(userEntity);
+                    userDao.flush();
+
+                    //patientEntity.getCaregivers().remove(caregiverInternalEntity);
+                    //patientDao.merge(patientEntity);
+
+                    //caregiverInternalDao.remove(caregiverInternalEntity);
+                    //caregiverInternalDao.merge(patientEntity);
+
+                    AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
+                    auditTrailDao.persist(auditTrailEntity);
+
+                    break;
+                }
+            }
+
+
+            return true;
+        }
+        catch (RuntimeException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private AuditTrailEntity buildAudit(UserEntity userEntity, PatientEntity patientEntity, AuditTrailEntity.AuditTrailEnum action){
+
+        AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
+        auditTrailEntity.setActionName(action);
+        auditTrailEntity.setUserName(userEntity.getUserName());
+        auditTrailEntity.setRoleName(userEntity.getRoleName());
+        auditTrailEntity.setPatientId(patientEntity.getPatientId());
+        auditTrailEntity.setWardId(patientEntity.getHierarchyEntity().getLevelId());
+        auditTrailEntity.setActionValue1(patientEntity.getPatientName());
+        return auditTrailEntity;
+    }
+
+
 }

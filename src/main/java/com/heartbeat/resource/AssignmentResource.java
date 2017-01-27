@@ -21,7 +21,7 @@ public class AssignmentResource extends ClinicalResource {
     private AssignmentService assignmentService;
 
     @GET
-    @Path("/assign/ping/{name}")
+    @Path("/assignment/ping/{name}")
     @Produces(MediaType.TEXT_PLAIN)
     public String ping(@PathParam("name") String name) {
         return "pong " + name;
@@ -33,7 +33,9 @@ public class AssignmentResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId) {
 
-        assignmentService.assignPatient(userId, patientId);
+        boolean success = assignmentService.assignPatient(userId, patientId);
+
+        if(!success)return Response.status(Response.Status.CONFLICT).build();
 
         return Response.ok().build();
     }
@@ -44,24 +46,11 @@ public class AssignmentResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response unassignPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId) {
 
-        assignmentService.unassignPatient(userId, patientId);
+        boolean success = assignmentService.unassignPatient(userId, patientId);
+
+        if(!success)return Response.status(Response.Status.CONFLICT).build();
 
         return Response.ok().build();
     }
-
-    @POST
-    @Path("/assignment/exception/{userId}/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response throwException(@PathParam("userId") int userId, @PathParam("patientId") int patientId) {
-
-        boolean success = assignmentService.throwPersistenceExceptionExample(userId, patientId);
-
-        if(!success)return Response.serverError().build();
-
-        return Response.ok().build();
-
-    }
-
 
 }
