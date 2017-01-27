@@ -10,7 +10,7 @@ import java.util.List;
  * Created by valerie on 1/24/17.
  */
 @Entity
-@Table(name = "hb_user")
+@Table(name = "hb_user", schema = "dbo", catalog = "heartbeat")
 @NamedQueries({
         @NamedQuery(name="UserEntity.findByUserName", query="SELECT u FROM UserEntity u WHERE u.userName = :userName"),
         @NamedQuery(name="UserEntity.findAssignments", query="SELECT u FROM UserEntity u JOIN FETCH u.assignments WHERE u.userId = :userId"),

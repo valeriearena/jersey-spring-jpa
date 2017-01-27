@@ -33,10 +33,10 @@ public class UserResource extends ClinicalResource {
     }
 
     @GET
-    @Path("/user/{userId}")
+    @Path("/user/byId/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPatient(@PathParam("userId") int userId) {
+    public Response getPatients(@PathParam("userId") int userId) {
 
         UserEntity userEntity = userService.find(userId);
 
@@ -66,7 +66,7 @@ public class UserResource extends ClinicalResource {
     }
 
     @GET
-    @Path("/user/{userName}")
+    @Path("/user/byName/{userName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserByName(@PathParam("userName") String userName) {
@@ -80,7 +80,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/count/{likeUserName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAssignments(@PathParam("likeUserName") String likeUserName) {
+    public Response getUserCount(@PathParam("likeUserName") String likeUserName) {
 
         Integer count = userService.findCount(likeUserName);
 

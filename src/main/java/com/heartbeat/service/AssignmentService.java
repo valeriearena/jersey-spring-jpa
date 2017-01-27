@@ -1,6 +1,7 @@
 package com.heartbeat.service;
 
 import com.heartbeat.persistence.dao.AuditTrailDao;
+import com.heartbeat.persistence.dao.PatientCaregiverInternalDao;
 import com.heartbeat.persistence.dao.PatientDao;
 import com.heartbeat.persistence.dao.UserDao;
 import com.heartbeat.persistence.entity.AuditTrailEntity;
@@ -25,6 +26,9 @@ public class AssignmentService {
     private PatientDao patientDao;
 
     @Autowired
+    private PatientCaregiverInternalDao caregiverInternalDao;
+
+    @Autowired
     private AuditTrailDao auditTrailDao;
 
     public void assignPatient(int userId, int patientId){
@@ -34,6 +38,11 @@ public class AssignmentService {
 
         PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
         caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+
+        caregiverEntity.setUserEntity(userEntity);
+        caregiverEntity.setPatientEntity(patientEntity);
+
+        caregiverInternalDao.persist(caregiverEntity);
 
         AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
         auditTrailEntity.setActionName(AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
@@ -52,12 +61,16 @@ public class AssignmentService {
         PatientEntity patientEntity = patientDao.find(patientId);
 
         Iterator<PatientCaregiverInternalEntity> iterator = patientEntity.getCaregivers().iterator();
+        PatientCaregiverInternalEntity caregiverToUnassign = null;
+
         while (iterator.hasNext()){
+            caregiverToUnassign = iterator.next();
             if(iterator.next().getUserEntity().getUserId() == userId){
-                iterator.remove();
+                //iterator.remove();
                 break;
             }
         }
+        caregiverInternalDao.remove(caregiverToUnassign);
 
         AuditTrailEntity auditTrailEntity = new AuditTrailEntity();
         auditTrailEntity.setActionName(AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);

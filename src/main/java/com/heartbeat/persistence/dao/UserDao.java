@@ -33,6 +33,13 @@ public class UserDao {
         em.remove(entity);
     }
 
+    public Integer findUserCount(String likeUserName){
+
+        Query query = em.createNamedQuery("UserEntity.findCount");
+        query.setParameter("likeUserName",  likeUserName + "%");
+        return ((Long)query.getSingleResult()).intValue();
+    }
+
     public UserEntity findByUserName(String userName){
         TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findByUserName", UserEntity.class);
         query.setParameter("userName",  userName);
@@ -43,12 +50,5 @@ public class UserDao {
         TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findAssignments", UserEntity.class);
         query.setParameter("userId",  userId);
         return query.getSingleResult();
-    }
-
-    public Integer findUserCount(String likeUserName){
-
-        Query query = em.createNamedQuery("UserEntity.findCount");
-        query.setParameter("likeUserName",  likeUserName + "%");
-        return ((Long)query.getSingleResult()).intValue();
     }
 }

@@ -7,6 +7,7 @@ gradlew
 gradlew.bat
 
 .idea/
+.gradle/
 gradle/
 
 classes

@@ -25,7 +25,6 @@
         <property name="packagesToScan" value="com.heartbeat.persistence" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="showSql" value="true" />
                 <property name="database" value="SQL_SERVER" />
                 <property name="databasePlatform" value="org.hibernate.dialect.SQLServerDialect" />
             </bean>
