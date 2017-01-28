@@ -22,5 +22,6 @@ http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/offbreak/12 <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/user/count/val <br/>
 
 Assignment Resource <br/>
-http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/assign/12/18 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/cmt/12/18 <br/>
+http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/bmt/12/18 <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/assignment/unassign/12/18 <br/>
