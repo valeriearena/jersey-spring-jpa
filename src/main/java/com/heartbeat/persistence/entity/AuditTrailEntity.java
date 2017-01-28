@@ -11,7 +11,9 @@ import java.util.Date;
 public class AuditTrailEntity {
 
     public enum AuditTrailEnum{
-        UPDATE_PATIENT;
+        START_ASSIGNMENT,
+        END_ASSSIGNMENT,
+        REMOVE_ASSIGNMENT;
     }
 
     @Id

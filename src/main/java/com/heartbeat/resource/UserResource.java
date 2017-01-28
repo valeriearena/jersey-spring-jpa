@@ -1,6 +1,7 @@
 package com.heartbeat.resource;
 
 import com.heartbeat.clientApi.baseResource.ClinicalResource;
+import com.heartbeat.clientApi.vo.InjectedRequestData;
 import com.heartbeat.persistence.entity.UserEntity;
 import com.heartbeat.service.UserService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -36,7 +38,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/byId/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPatients(@PathParam("userId") int userId) {
+    public Response getPatients(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
 
         UserEntity userEntity = userService.find(userId);
 
@@ -47,7 +49,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/byName/{userName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserByName(@PathParam("userName") String userName) {
+    public Response getUserByName(@PathParam("userName") String userName, @Context InjectedRequestData injectedRequestData) {
 
         UserEntity userEntity = userService.findByUserName(userName);
 
@@ -58,7 +60,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/onbreak/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUserOnBreak(@PathParam("userId") int userId) {
+    public Response updateUserOnBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
 
         userService.updateUserOnBreak(userId);
 
@@ -69,7 +71,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/offbreak/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUserOffBreak(@PathParam("userId") int userId) {
+    public Response updateUserOffBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
 
         userService.updateUserOffBreak(userId);
 
@@ -80,7 +82,7 @@ public class UserResource extends ClinicalResource {
     @Path("/user/count/{likeUserName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserCount(@PathParam("likeUserName") String likeUserName) {
+    public Response getUserCount(@PathParam("likeUserName") String likeUserName, @Context InjectedRequestData injectedRequestData) {
 
         Integer count = userService.findCount(likeUserName);
 

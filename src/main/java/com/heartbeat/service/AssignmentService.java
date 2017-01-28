@@ -9,9 +9,14 @@ import com.heartbeat.persistence.entity.PatientCaregiverInternalEntity;
 import com.heartbeat.persistence.entity.PatientEntity;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import javax.annotation.Resource;
 
 /**
  * Created by valerie on 1/26/17.
@@ -31,22 +36,72 @@ public class AssignmentService {
     @Autowired
     private AuditTrailDao auditTrailDao;
 
+    @Resource
+    private JpaTransactionManager transactionManager;
+
     @Transactional(propagation = Propagation.REQUIRED)
-    public void assignPatient(int userId, int patientId) {
+    public boolean assignPatientCmt(int userId, int patientId) {
 
-        UserEntity userEntity = userDao.find(userId);
-        PatientEntity patientEntity = patientDao.find(patientId);
+        try {
+            UserEntity userEntity = userDao.find(userId);
+            PatientEntity patientEntity = patientDao.find(patientId);
 
-        PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
-        caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+            AuditTrailEntity auditTrailStart = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.START_ASSIGNMENT);
+            auditTrailDao.persist(auditTrailStart);
 
-        caregiverEntity.setUserEntity(userEntity);
-        caregiverEntity.setPatientEntity(patientEntity);
+            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+            caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
 
-        caregiverInternalDao.persist(caregiverEntity);
+            caregiverEntity.setUserEntity(userEntity);
+            caregiverEntity.setPatientEntity(patientEntity);
 
-        AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
-        auditTrailDao.persist(auditTrailEntity);
+            caregiverInternalDao.persist(caregiverEntity);
+
+            AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
+            auditTrailDao.persist(auditTrailEnd);
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean assignPatientBmt(int userId, int patientId) {
+
+        TransactionStatus status = null;
+        try {
+
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            status = transactionManager.getTransaction(def);
+
+            UserEntity userEntity = userDao.find(userId);
+            PatientEntity patientEntity = patientDao.find(patientId);
+
+            AuditTrailEntity auditTrailStart = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.START_ASSIGNMENT);
+            auditTrailDao.persist(auditTrailStart);
+
+
+            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+            caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+
+            caregiverEntity.setUserEntity(userEntity);
+            caregiverEntity.setPatientEntity(patientEntity);
+
+            caregiverInternalDao.persist(caregiverEntity);
+
+            AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
+            auditTrailDao.persist(auditTrailEnd);
+            return true;
+        }
+        catch (Exception e) {
+
+            transactionManager.rollback(status);
+            return false;
+        }
+        finally {
+            try {if(!status.isCompleted()){transactionManager.commit(status);}}
+            catch (Exception e) {transactionManager.rollback(status);}}
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -67,7 +122,7 @@ public class AssignmentService {
                 //caregiverInternalDao.remove(caregiverInternalEntity);
                 //caregiverInternalDao.merge(patientEntity);
 
-                AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.UPDATE_PATIENT);
+                AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.REMOVE_ASSIGNMENT);
                 auditTrailDao.persist(auditTrailEntity);
 
                 break;

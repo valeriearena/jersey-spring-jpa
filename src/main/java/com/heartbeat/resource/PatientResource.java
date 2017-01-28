@@ -1,6 +1,7 @@
 package com.heartbeat.resource;
 
 import com.heartbeat.clientApi.baseResource.ClinicalResource;
+import com.heartbeat.clientApi.vo.InjectedRequestData;
 import com.heartbeat.persistence.entity.PatientEntity;
 import com.heartbeat.service.PatientService;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -36,7 +38,7 @@ public class PatientResource extends ClinicalResource {
     @Path("/patient/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPatient(@PathParam("patientId") int patientId) {
+    public Response getPatient(@PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
         PatientEntity patientEntity = patientService.find(patientId);
 

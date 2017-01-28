@@ -1,6 +1,7 @@
 package com.heartbeat.resource;
 
 import com.heartbeat.clientApi.baseResource.ClinicalResource;
+import com.heartbeat.clientApi.vo.InjectedRequestData;
 import com.heartbeat.persistence.entity.PatientCaregiverInternalEntity;
 import com.heartbeat.service.PatientCaregiverInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,7 +36,7 @@ public class PatientCaregiverInternalResource extends ClinicalResource {
     @Path("/internalCaregiver/namednative/{hospitalId}/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByUserAndHospitalNamedQuery(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId) {
+    public Response findByUserAndHospitalNamedQuery(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
 
         List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByUserAndHospitalNamedQuery(hospitalId,userId);
 
@@ -46,7 +48,7 @@ public class PatientCaregiverInternalResource extends ClinicalResource {
     @Path("/internalCaregiver/dynamicnative/hospital/{hospitalId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByHospitalDynamicQuery(@PathParam("hospitalId") int hospitalId) {
+    public Response findByHospitalDynamicQuery(@PathParam("hospitalId") int hospitalId, @Context InjectedRequestData injectedRequestData) {
 
         List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByHospitalDynamicQuery(hospitalId);
 
@@ -58,7 +60,7 @@ public class PatientCaregiverInternalResource extends ClinicalResource {
     @Path("/internalCaregiver/dynamicnative/user/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findCaregiverIdByUserDynamicQuery(@PathParam("userId") int userId) {
+    public Response findCaregiverIdByUserDynamicQuery(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
 
         Integer id = patientCaregiverInternalService.findCaregiverIdByUserDynamicQuery(userId);
         return Response.ok().entity(id).build();
