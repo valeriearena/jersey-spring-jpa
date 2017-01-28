@@ -59,6 +59,7 @@ public class AssignmentService {
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
             auditTrailDao.persist(auditTrailEnd);
+
             return true;
         }
         catch (Exception e) {
@@ -92,6 +93,9 @@ public class AssignmentService {
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
             auditTrailDao.persist(auditTrailEnd);
+
+            transactionManager.commit(status);
+
             return true;
         }
         catch (Exception e) {
@@ -112,8 +116,10 @@ public class AssignmentService {
 
         for (PatientCaregiverInternalEntity caregiverInternalEntity : patientEntity.getCaregivers()) {
             if (caregiverInternalEntity.getUserEntity().getUserId() == userId) {
+
                 userEntity.getAssignments().remove(caregiverInternalEntity);
                 userDao.merge(userEntity);
+
                 userDao.flush();
 
                 //patientEntity.getCaregivers().remove(caregiverInternalEntity);
