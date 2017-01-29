@@ -1,5 +1,6 @@
 package com.heartbeat.resource;
 
+import com.heartbeat.clientApi.MHMediaType;
 import com.heartbeat.clientApi.baseResource.ClinicalResource;
 import com.heartbeat.clientApi.vo.InjectedRequestData;
 import com.heartbeat.service.AssignmentService;
@@ -31,7 +32,7 @@ public class AssignmentResource extends ClinicalResource {
 
     @POST
     @Path("/assignment/cmt/{userId}/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MHMediaType.ICAPI_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatientCmt(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
@@ -50,7 +51,7 @@ public class AssignmentResource extends ClinicalResource {
 
     @POST
     @Path("/assignment/bmt/{userId}/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MHMediaType.ICAPI_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatientBmt(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
@@ -63,7 +64,7 @@ public class AssignmentResource extends ClinicalResource {
 
     @POST
     @Path("/assignment/role/{userId}/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MHMediaType.ICAPI_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatientWithRole(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
@@ -83,7 +84,7 @@ public class AssignmentResource extends ClinicalResource {
 
     @POST
     @Path("/assignment/unassign/{userId}/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MHMediaType.ICAPI_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response unassignPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 

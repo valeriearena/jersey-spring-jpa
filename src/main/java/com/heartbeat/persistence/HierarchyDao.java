@@ -1,4 +1,4 @@
-package com.heartbeat.persistence.dao;
+package com.heartbeat.persistence;
 
 import com.heartbeat.persistence.entity.HierarchyEntity;
 import org.springframework.stereotype.Repository;

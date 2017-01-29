@@ -3,6 +3,7 @@ package com.heartbeat.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class UserEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy="userEntity")
-    private List<CaregiverEntity> assignments;
+    private List<CaregiverEntity> assignments = new ArrayList<>();
 
     public Integer getUserId() {
         return userId;

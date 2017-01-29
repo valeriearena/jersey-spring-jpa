@@ -1,9 +1,9 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.dao.AuditTrailDao;
-import com.heartbeat.persistence.dao.CaregiverDao;
-import com.heartbeat.persistence.dao.PatientDao;
-import com.heartbeat.persistence.dao.UserDao;
+import com.heartbeat.persistence.AuditTrailDao;
+import com.heartbeat.persistence.CaregiverDao;
+import com.heartbeat.persistence.PatientDao;
+import com.heartbeat.persistence.UserDao;
 import com.heartbeat.persistence.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;

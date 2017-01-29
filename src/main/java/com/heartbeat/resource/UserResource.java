@@ -57,7 +57,18 @@ public class UserResource extends ClinicalResource {
     }
 
     @GET
-    @Path("/user/count/{likeUserName}")
+    @Path("/user/assignmentCount/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAssignmentCount(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
+
+        UserEntity userEntity = userService.findAssignments(userId);
+
+        return Response.ok().entity(userEntity).build();
+    }
+
+    @GET
+    @Path("/user/userNameCount/{likeUserName}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserCount(@PathParam("likeUserName") String likeUserName, @Context InjectedRequestData injectedRequestData) {

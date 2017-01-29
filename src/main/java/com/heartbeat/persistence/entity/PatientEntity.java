@@ -1,6 +1,7 @@
 package com.heartbeat.persistence.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class PatientEntity {
     private HierarchyEntity hierarchyEntity;
 
     @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER)
-    private List<CaregiverEntity> caregivers;
+    private List<CaregiverEntity> caregivers = new ArrayList<>();
 
     public Integer getPatientId() {
         return patientId;

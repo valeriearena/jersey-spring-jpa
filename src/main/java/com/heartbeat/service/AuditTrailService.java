@@ -1,6 +1,6 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.dao.AuditTrailDao;
+import com.heartbeat.persistence.AuditTrailDao;
 import com.heartbeat.persistence.entity.AuditTrailEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.heartbeat.persistence.dao;
+package com.heartbeat.persistence;
 
 import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
@@ -36,13 +36,6 @@ public class UserDao {
         em.remove(entity);
     }
 
-    public Integer findUserCount(String likeUserName){
-
-        Query query = em.createNamedQuery(UserEntity.USER_FIND_COUNT);
-        query.setParameter("likeUserName",  likeUserName + "%");
-        return ((Long)query.getSingleResult()).intValue();
-    }
-
     public UserEntity findByUserName(String userName){
         TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_BY_USER_NAME, UserEntity.class);
         query.setParameter("userName",  userName);
@@ -55,7 +48,11 @@ public class UserDao {
         return query.getSingleResult();
     }
 
-    public void flush(){
-        em.flush();
+    public Integer findUserCount(String likeUserName){
+
+        Query query = em.createNamedQuery(UserEntity.USER_FIND_COUNT);
+        query.setParameter("likeUserName",  likeUserName + "%");
+        return ((Long)query.getSingleResult()).intValue();
     }
+
 }

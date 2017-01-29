@@ -1,7 +1,7 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.dao.HierarchyDao;
-import com.heartbeat.persistence.dao.UserDao;
+import com.heartbeat.persistence.HierarchyDao;
+import com.heartbeat.persistence.UserDao;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,6 +49,10 @@ public class UserService {
         return userDao.findByUserName(userName);
     }
 
+    public UserEntity findAssignments(int userId){
+        return userDao.findAssignments(userId);
+
+    }
     public Integer findCount(String likeUserName){
 
         return userDao.findUserCount(likeUserName);

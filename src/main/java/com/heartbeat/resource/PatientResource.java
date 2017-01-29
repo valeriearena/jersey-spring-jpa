@@ -1,5 +1,6 @@
 package com.heartbeat.resource;
 
+import com.heartbeat.clientApi.MHMediaType;
 import com.heartbeat.clientApi.baseResource.ClinicalResource;
 import com.heartbeat.clientApi.vo.InjectedRequestData;
 import com.heartbeat.persistence.entity.PatientEntity;
@@ -36,7 +37,7 @@ public class PatientResource extends ClinicalResource {
 
     @GET
     @Path("/patient/{patientId}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MHMediaType.ICAPI_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPatient(@PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 

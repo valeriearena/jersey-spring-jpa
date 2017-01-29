@@ -30,6 +30,8 @@ dependencies {
 
     compile 'org.springframework.data:spring-data-jpa:1.10.6.RELEASE'
 
-    testCompile 'org.jmockit:jmockit:1.8'
+    testCompile 'org.springframework:spring-test:4.3.4.RELEASE'
+    testCompile 'com.h2database:h2:1.4.182'
+
     testCompile 'junit:junit:4.12'
 }

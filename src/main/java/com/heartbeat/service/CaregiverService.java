@@ -1,6 +1,6 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.dao.CaregiverDao;
+import com.heartbeat.persistence.CaregiverDao;
 import com.heartbeat.persistence.entity.CaregiverEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
