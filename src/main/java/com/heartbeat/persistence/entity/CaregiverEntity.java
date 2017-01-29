@@ -32,9 +32,6 @@ import java.util.List;
 })
 public class CaregiverEntity {
 
-    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT= "CaregiverEntity.findByUserAndPatient";
-    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "CaregiverEntity.findByUserAndHospital";
-
     public static final String DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL =
             "SELECT c.id, c.userId, c.patientId, c.thirdPartySource, c.lastUpdated " +
                     "FROM hb_patient_caregiver_internal c " +

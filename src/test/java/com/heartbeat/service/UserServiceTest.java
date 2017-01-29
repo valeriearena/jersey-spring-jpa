@@ -1,6 +1,6 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.UserDao;
+import com.heartbeat.persistence.dao.UserDao;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.junit.Before;
 import org.junit.Test;

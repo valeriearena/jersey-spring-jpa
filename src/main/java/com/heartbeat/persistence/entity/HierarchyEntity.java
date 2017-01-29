@@ -21,10 +21,6 @@ import javax.persistence.*;
 })
 public class HierarchyEntity {
 
-    public static final String HIERARCHY_FIND_ALL = "HierarchyEntity.findAll";
-    public static final String HIERARCHY_FIND_ROOT = "HierarchyEntity.findRootHierarchy";
-    public static final String HIERARCY_FIND_CHILDREN = "HierarchyEntity.findHierarchyImmediateChildren";
-
     @Id
     private Integer levelId;
 

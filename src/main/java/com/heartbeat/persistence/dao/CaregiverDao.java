@@ -1,4 +1,4 @@
-package com.heartbeat.persistence;
+package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.CaregiverEntity;
 import org.springframework.stereotype.Repository;
@@ -35,14 +35,14 @@ public class CaregiverDao {
     }
 
     public CaregiverEntity findNamedNativeByUserAndPatient(int userId, int patientId){
-        TypedQuery<CaregiverEntity> query = em.createNamedQuery(CaregiverEntity.NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT, CaregiverEntity.class);
+        TypedQuery<CaregiverEntity> query = em.createNamedQuery("CaregiverEntity.findByUserAndPatient", CaregiverEntity.class);
         query.setParameter("userId",  userId);
         query.setParameter("patientId",  patientId);
         return query.getSingleResult();
     }
 
     public List<CaregiverEntity>  findNamedNativeByUserAndHospital(int userId, int hospitalId){
-        TypedQuery<CaregiverEntity> query  = em.createNamedQuery(CaregiverEntity.NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL, CaregiverEntity.class);
+        TypedQuery<CaregiverEntity> query  = em.createNamedQuery("CaregiverEntity.findByUserAndHospital", CaregiverEntity.class);
         query.setParameter("userId",  userId);
         query.setParameter("hospitalId",  hospitalId);
         return query.getResultList();

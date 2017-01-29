@@ -1,4 +1,4 @@
-package com.heartbeat.persistence;
+package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.PatientEntity;
 import org.springframework.stereotype.Repository;

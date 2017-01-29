@@ -1,4 +1,4 @@
-package com.heartbeat.persistence;
+package com.heartbeat.persistence.dao;
 
 import com.heartbeat.persistence.entity.UserEntity;
 import org.springframework.stereotype.Repository;
@@ -37,20 +37,20 @@ public class UserDao {
     }
 
     public UserEntity findByUserName(String userName){
-        TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_BY_USER_NAME, UserEntity.class);
+        TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findByUserName", UserEntity.class);
         query.setParameter("userName",  userName);
         return query.getSingleResult();
     }
 
     public UserEntity findAssignments(int userId){
-        TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_ASSIGNMENTS, UserEntity.class);
+        TypedQuery<UserEntity> query  = em.createNamedQuery("UserEntity.findAssignments", UserEntity.class);
         query.setParameter("userId",  userId);
         return query.getSingleResult();
     }
 
     public Integer findUserCount(String likeUserName){
 
-        Query query = em.createNamedQuery(UserEntity.USER_FIND_COUNT);
+        Query query = em.createNamedQuery("UserEntity.findCount");
         query.setParameter("likeUserName",  likeUserName + "%");
         return ((Long)query.getSingleResult()).intValue();
     }
