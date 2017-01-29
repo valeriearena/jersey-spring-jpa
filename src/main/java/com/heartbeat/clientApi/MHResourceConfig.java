@@ -49,7 +49,7 @@ public class MHResourceConfig extends ResourceConfig
         register(AssignmentResource.class);
         register(HierarchyResource.class);
         register(PatientResource.class);
-        register(PatientCaregiverInternalResource.class);
+        register(CaregiverResource.class);
         register(UserResource.class);
 
         register(AuditTrailResource.class);

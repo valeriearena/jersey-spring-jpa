@@ -54,8 +54,21 @@ public class AssignmentResource extends ClinicalResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response assignPatientBmt(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
+        boolean isSuccessful = assignmentService.assignPatientBmt(userId, patientId);
+
+        if (!isSuccessful) return Response.status(Response.Status.CONFLICT).build();
+
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/assignment/role/{userId}/{patientId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response assignPatientWithRole(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
+
         try {
-            boolean isSuccessful = assignmentService.assignPatientBmt(userId, patientId);
+            boolean isSuccessful = assignmentService.assignPatientWithRole(userId, patientId);
 
             if (!isSuccessful) return Response.status(Response.Status.CONFLICT).build();
 
@@ -68,7 +81,7 @@ public class AssignmentResource extends ClinicalResource {
 
     }
 
-    @PUT
+    @POST
     @Path("/assignment/unassign/{userId}/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

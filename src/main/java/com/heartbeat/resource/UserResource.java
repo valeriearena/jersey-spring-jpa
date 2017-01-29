@@ -56,28 +56,6 @@ public class UserResource extends ClinicalResource {
         return Response.ok().entity(userEntity).build();
     }
 
-    @PUT
-    @Path("/user/onbreak/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUserOnBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
-
-        userService.updateUserOnBreak(userId);
-
-        return Response.ok().build();
-    }
-
-    @PUT
-    @Path("/user/offbreak/{userId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUserOffBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
-
-        userService.updateUserOffBreak(userId);
-
-        return Response.ok().build();
-    }
-
     @GET
     @Path("/user/count/{likeUserName}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -88,4 +66,29 @@ public class UserResource extends ClinicalResource {
 
         return Response.ok().entity(count).build();
     }
+
+    @POST
+    @Path("/user/onbreak/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserOnBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
+
+        userService.updateUserOnBreak(userId);
+
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/user/offbreak/{userId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserOffBreak(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
+
+        userService.updateUserOffBreak(userId);
+
+        return Response.ok().build();
+    }
+
+
+
 }

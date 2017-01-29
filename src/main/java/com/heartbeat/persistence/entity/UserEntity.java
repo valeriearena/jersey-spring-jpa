@@ -69,7 +69,7 @@ public class UserEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy="userEntity")
-    private List<PatientCaregiverInternalEntity> assignments;
+    private List<CaregiverEntity> assignments;
 
     public Integer getUserId() {
         return userId;
@@ -383,11 +383,12 @@ public class UserEntity {
         this.hierarchyEntity = hierarchyEntity;
     }
 
-    public List<PatientCaregiverInternalEntity> getAssignments() {
+    public List<CaregiverEntity> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(List<PatientCaregiverInternalEntity> assignments) {
+    public void setAssignments(List<CaregiverEntity> assignments) {
         this.assignments = assignments;
     }
+
 }

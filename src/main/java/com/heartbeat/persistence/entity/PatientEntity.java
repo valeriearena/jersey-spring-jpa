@@ -43,7 +43,7 @@ public class PatientEntity {
     private HierarchyEntity hierarchyEntity;
 
     @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER)
-    private List<PatientCaregiverInternalEntity> caregivers;
+    private List<CaregiverEntity> caregivers;
 
     public Integer getPatientId() {
         return patientId;
@@ -245,11 +245,11 @@ public class PatientEntity {
         this.hierarchyEntity = hierarchyEntity;
     }
 
-    public List<PatientCaregiverInternalEntity> getCaregivers() {
+    public List<CaregiverEntity> getCaregivers() {
         return caregivers;
     }
 
-    public void setCaregivers(List<PatientCaregiverInternalEntity> caregivers) {
+    public void setCaregivers(List<CaregiverEntity> caregivers) {
         this.caregivers = caregivers;
     }
 

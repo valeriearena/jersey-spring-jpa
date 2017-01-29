@@ -1,10 +1,13 @@
 package com.heartbeat.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by valerie on 1/24/17.
@@ -13,24 +16,24 @@ import java.util.Date;
 @Entity
 @Table(name = "hb_patient_caregiver_internal")
 @NamedNativeQueries({
-        @NamedNativeQuery(name="PatientCaregiverInternalEntity.findByUserAndPatient",
+        @NamedNativeQuery(name="CaregiverEntity.findByUserAndPatient",
                 query="SELECT id, userId, patientId, thirdPartySource, lastUpdated " +
                         "FROM hb_patient_caregiver_internal " +
                         "WHERE userId = :userId AND patientId = :patientId",
-                resultClass = PatientCaregiverInternalEntity.class),
-        @NamedNativeQuery(name="PatientCaregiverInternalEntity.findByUserAndHospital",
+                resultClass = CaregiverEntity.class),
+        @NamedNativeQuery(name="CaregiverEntity.findByUserAndHospital",
                 query="SELECT c.id, c.userId, c.patientId, c.thirdPartySource, c.lastUpdated " +
                         "FROM hb_patient_caregiver_internal c " +
                         "JOIN hb_user u ON c.userId = u.userId " +
                         "JOIN hb_patient p ON c.patientId = p.patientId " +
                         "JOIN hb_hierarchy h ON p.wardId = h.levelId " +
                         "WHERE c.userId = :userId AND h.hospitalId = :hospitalId",
-                resultClass = PatientCaregiverInternalEntity.class)
+                resultClass = CaregiverEntity.class)
 })
-public class PatientCaregiverInternalEntity {
+public class CaregiverEntity {
 
-    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT= "PatientCaregiverInternalEntity.findByUserAndPatient";
-    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "PatientCaregiverInternalEntity.findByUserAndHospital";
+    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT= "CaregiverEntity.findByUserAndPatient";
+    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "CaregiverEntity.findByUserAndHospital";
 
     public static final String DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL =
             "SELECT c.id, c.userId, c.patientId, c.thirdPartySource, c.lastUpdated " +
@@ -58,6 +61,9 @@ public class PatientCaregiverInternalEntity {
     @JoinColumn(name = "patientId")
     private PatientEntity patientEntity;
 
+    @JsonIgnore
+    @OneToMany(mappedBy="caregiverEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CaregiverRoleEntity> roles = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -97,5 +103,13 @@ public class PatientCaregiverInternalEntity {
 
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
+    }
+
+    public List<CaregiverRoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<CaregiverRoleEntity> roles) {
+        this.roles = roles;
     }
 }

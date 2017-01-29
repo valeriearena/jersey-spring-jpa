@@ -27,7 +27,7 @@ public class AuditTrailResource extends ClinicalResource {
         return "pong " + name;
     }
 
-    @PUT
+    @POST
     @Path("/audit/remove/{trailId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

@@ -1,13 +1,10 @@
 package com.heartbeat.service;
 
 import com.heartbeat.persistence.dao.AuditTrailDao;
-import com.heartbeat.persistence.dao.PatientCaregiverInternalDao;
+import com.heartbeat.persistence.dao.CaregiverDao;
 import com.heartbeat.persistence.dao.PatientDao;
 import com.heartbeat.persistence.dao.UserDao;
-import com.heartbeat.persistence.entity.AuditTrailEntity;
-import com.heartbeat.persistence.entity.PatientCaregiverInternalEntity;
-import com.heartbeat.persistence.entity.PatientEntity;
-import com.heartbeat.persistence.entity.UserEntity;
+import com.heartbeat.persistence.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
@@ -31,7 +28,7 @@ public class AssignmentService {
     private PatientDao patientDao;
 
     @Autowired
-    private PatientCaregiverInternalDao caregiverInternalDao;
+    private CaregiverDao caregiverDao;
 
     @Autowired
     private AuditTrailDao auditTrailDao;
@@ -49,13 +46,17 @@ public class AssignmentService {
             AuditTrailEntity auditTrailStart = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.START_ASSIGNMENT);
             auditTrailDao.persist(auditTrailStart);
 
-            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+            CaregiverEntity caregiverEntity = new CaregiverEntity();
             caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
 
             caregiverEntity.setUserEntity(userEntity);
             caregiverEntity.setPatientEntity(patientEntity);
 
-            caregiverInternalDao.persist(caregiverEntity);
+            CaregiverRoleEntity role = new CaregiverRoleEntity();
+            role.setCaregiverEntity(caregiverEntity);
+            role.setRoleId(1);
+
+            caregiverDao.persist(caregiverEntity);
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
             auditTrailDao.persist(auditTrailEnd);
@@ -83,13 +84,13 @@ public class AssignmentService {
             auditTrailDao.persist(auditTrailStart);
 
 
-            PatientCaregiverInternalEntity caregiverEntity = new PatientCaregiverInternalEntity();
+            CaregiverEntity caregiverEntity = new CaregiverEntity();
             caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
 
             caregiverEntity.setUserEntity(userEntity);
             caregiverEntity.setPatientEntity(patientEntity);
 
-            caregiverInternalDao.persist(caregiverEntity);
+            caregiverDao.persist(caregiverEntity);
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
             auditTrailDao.persist(auditTrailEnd);
@@ -110,10 +111,40 @@ public class AssignmentService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public boolean assignPatientWithRole(int userId, int patientId) {
+
+        try {
+            UserEntity userEntity = userDao.find(userId);
+            PatientEntity patientEntity = patientDao.find(patientId);
+
+            CaregiverEntity caregiverEntity = new CaregiverEntity();
+            caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
+
+            caregiverEntity.setUserEntity(userEntity);
+            caregiverEntity.setPatientEntity(patientEntity);
+
+            CaregiverRoleEntity role = new CaregiverRoleEntity();
+            role.setCaregiverEntity(caregiverEntity);
+            role.setRoleId(1);
+
+            caregiverEntity.getRoles().add(role);
+
+            caregiverDao.persist(caregiverEntity);
+
+
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void unassignPatient(int userId, int patientId) {
 
-        PatientCaregiverInternalEntity caregiverInternalEntity = caregiverInternalDao.findNamedNativeByUserAndPatient(userId, patientId);
-        caregiverInternalDao.remove(caregiverInternalEntity);
+        CaregiverEntity caregiverInternalEntity = caregiverDao.findNamedNativeByUserAndPatient(userId, patientId);
+        caregiverDao.remove(caregiverInternalEntity);
 
     }
 
