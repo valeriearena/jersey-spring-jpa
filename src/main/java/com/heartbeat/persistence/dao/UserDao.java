@@ -20,10 +20,6 @@ public class UserDao {
     @PersistenceContext
     private EntityManager em;
 
-    public void flush(){
-        em.flush();
-    }
-
     public UserEntity find(Integer id) {
         return em.find(UserEntity.class, id);
     }
@@ -57,5 +53,9 @@ public class UserDao {
         TypedQuery<UserEntity> query  = em.createNamedQuery(UserEntity.USER_FIND_ASSIGNMENTS, UserEntity.class);
         query.setParameter("userId",  userId);
         return query.getSingleResult();
+    }
+
+    public void flush(){
+        em.flush();
     }
 }

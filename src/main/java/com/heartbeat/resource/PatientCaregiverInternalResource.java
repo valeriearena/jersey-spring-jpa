@@ -33,36 +33,47 @@ public class PatientCaregiverInternalResource extends ClinicalResource {
     }
 
     @GET
-    @Path("/internalCaregiver/namednative/{hospitalId}/{userId}")
+    @Path("/internalCaregiver/namednative/byUserAndPatient/{userId}/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByUserAndHospitalNamedQuery(@PathParam("hospitalId") int hospitalId, @PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
+    public Response findNamedNativeByUserAndPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
-        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByUserAndHospitalNamedQuery(hospitalId,userId);
+        PatientCaregiverInternalEntity caregiver = patientCaregiverInternalService.findNamedNativeByUserAndPatient(userId, patientId);
+
+        return Response.ok().entity(caregiver).build();
+    }
+
+    @GET
+    @Path("/internalCaregiver/namednative/byUserAndHospital/{userId}/{hospitalId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findNamedNativeByUserAndHospital(@PathParam("userId") int userId, @PathParam("hospitalId") int hospitalId, @Context InjectedRequestData injectedRequestData) {
+
+        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findNamedNativeByUserAndHospital(userId, hospitalId);
 
         GenericEntity<List<PatientCaregiverInternalEntity>> list = new GenericEntity<List<PatientCaregiverInternalEntity>>(caregiverList) {};
         return Response.ok(list).build();
     }
 
     @GET
-    @Path("/internalCaregiver/dynamicnative/hospital/{hospitalId}")
+    @Path("/internalCaregiver/dynamicnative/byUserAndHospital/{userId}/{hospitalId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByHospitalDynamicQuery(@PathParam("hospitalId") int hospitalId, @Context InjectedRequestData injectedRequestData) {
+    public Response findDynamicNativeByUserAndHospital(@PathParam("userId") int userId, @PathParam("hospitalId") int hospitalId, @Context InjectedRequestData injectedRequestData) {
 
-        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findByHospitalDynamicQuery(hospitalId);
+        List<PatientCaregiverInternalEntity> caregiverList = patientCaregiverInternalService.findDynamicNativeByUserAndHospital(userId, hospitalId);
 
         GenericEntity<List<PatientCaregiverInternalEntity>> list = new GenericEntity<List<PatientCaregiverInternalEntity>>(caregiverList) {};
         return Response.ok(list).build();
     }
 
     @GET
-    @Path("/internalCaregiver/dynamicnative/user/{userId}")
+    @Path("/internalCaregiver/dynamicnative/byUserAndPatient/{userId}/{patientId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findCaregiverIdByUserDynamicQuery(@PathParam("userId") int userId, @Context InjectedRequestData injectedRequestData) {
+    public Response findDynamicNativeByUserAndPatient(@PathParam("userId") int userId, @PathParam("patientId") int patientId, @Context InjectedRequestData injectedRequestData) {
 
-        Integer id = patientCaregiverInternalService.findCaregiverIdByUserDynamicQuery(userId);
+        Integer id = patientCaregiverInternalService.findDynamicNativeByUserAndPatient(userId, patientId);
         return Response.ok().entity(id).build();
     }
 }

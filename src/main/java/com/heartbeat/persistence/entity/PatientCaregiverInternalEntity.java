@@ -13,29 +13,35 @@ import java.util.Date;
 @Entity
 @Table(name = "hb_patient_caregiver_internal")
 @NamedNativeQueries({
+        @NamedNativeQuery(name="PatientCaregiverInternalEntity.findByUserAndPatient",
+                query="SELECT id, userId, patientId, thirdPartySource, lastUpdated " +
+                        "FROM hb_patient_caregiver_internal " +
+                        "WHERE userId = :userId AND patientId = :patientId",
+                resultClass = PatientCaregiverInternalEntity.class),
         @NamedNativeQuery(name="PatientCaregiverInternalEntity.findByUserAndHospital",
-                query="SELECT ci.id, ci.userId, ci.patientId, ci.thirdPartySource, ci.lastUpdated " +
-                        "FROM hb_patient_caregiver_internal ci " +
-                        "JOIN hb_user u ON ci.userId = u.userId " +
-                        "JOIN hb_patient p ON ci.patientId = p.patientId " +
+                query="SELECT c.id, c.userId, c.patientId, c.thirdPartySource, c.lastUpdated " +
+                        "FROM hb_patient_caregiver_internal c " +
+                        "JOIN hb_user u ON c.userId = u.userId " +
+                        "JOIN hb_patient p ON c.patientId = p.patientId " +
                         "JOIN hb_hierarchy h ON p.wardId = h.levelId " +
-                        "WHERE h.hospitalId = :hospitalId AND ci.userId = :userId",
+                        "WHERE c.userId = :userId AND h.hospitalId = :hospitalId",
                 resultClass = PatientCaregiverInternalEntity.class)
 })
 public class PatientCaregiverInternalEntity {
 
-    public static final String CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "PatientCaregiverInternalEntity.findByUserAndHospital";
+    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT= "PatientCaregiverInternalEntity.findByUserAndPatient";
+    public static final String NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL = "PatientCaregiverInternalEntity.findByUserAndHospital";
 
-    public static final String CAREGIVER_FIND_BY_HOSPITAL =
-            "SELECT ci.id, ci.userId, ci.patientId, ci.thirdPartySource, ci.lastUpdated " +
-                    "FROM hb_patient_caregiver_internal ci " +
-                    "JOIN hb_user u ON ci.userId = u.userId " +
-                    "JOIN hb_patient p ON ci.patientId = p.patientId " +
+    public static final String DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL =
+            "SELECT c.id, c.userId, c.patientId, c.thirdPartySource, c.lastUpdated " +
+                    "FROM hb_patient_caregiver_internal c " +
+                    "JOIN hb_user u ON c.userId = u.userId " +
+                    "JOIN hb_patient p ON c.patientId = p.patientId " +
                     "JOIN hb_hierarchy h ON p.wardId = h.levelId " +
-                    "WHERE h.hospitalId = :hospitalId";
+                    "WHERE c.userId = :userId AND h.hospitalId = :hospitalId";
 
-    public static final String CAREGIVER_FIND_BY_USER =
-            "SELECT id FROM hb_patient_caregiver_internal WHERE userId = :userId";
+    public static final String DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT =
+            "SELECT id FROM hb_patient_caregiver_internal WHERE userId = :userId AND patientId = :patientId";
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -92,6 +98,4 @@ public class PatientCaregiverInternalEntity {
     public void setPatientEntity(PatientEntity patientEntity) {
         this.patientEntity = patientEntity;
     }
-
-
 }

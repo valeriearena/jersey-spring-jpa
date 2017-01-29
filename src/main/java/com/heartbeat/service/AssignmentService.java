@@ -105,35 +105,16 @@ public class AssignmentService {
         }
         finally {
             try {if(!status.isCompleted()){transactionManager.commit(status);}}
-            catch (Exception e) {transactionManager.rollback(status);}}
+            catch (Exception e) {transactionManager.rollback(status);}
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public void unassignPatient(int userId, int patientId) {
 
-        UserEntity userEntity = userDao.find(userId);
-        PatientEntity patientEntity = patientDao.find(patientId);
+        PatientCaregiverInternalEntity caregiverInternalEntity = caregiverInternalDao.findNamedNativeByUserAndPatient(userId, patientId);
+        caregiverInternalDao.remove(caregiverInternalEntity);
 
-        for (PatientCaregiverInternalEntity caregiverInternalEntity : patientEntity.getCaregivers()) {
-            if (caregiverInternalEntity.getUserEntity().getUserId() == userId) {
-
-                userEntity.getAssignments().remove(caregiverInternalEntity);
-                userDao.merge(userEntity);
-
-                userDao.flush();
-
-                //patientEntity.getCaregivers().remove(caregiverInternalEntity);
-                //patientDao.merge(patientEntity);
-
-                //caregiverInternalDao.remove(caregiverInternalEntity);
-                //caregiverInternalDao.merge(patientEntity);
-
-                AuditTrailEntity auditTrailEntity = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.REMOVE_ASSIGNMENT);
-                auditTrailDao.persist(auditTrailEntity);
-
-                break;
-            }
-        }
     }
 
     private AuditTrailEntity buildAudit(UserEntity userEntity, PatientEntity patientEntity, AuditTrailEntity.AuditTrailEnum action) {

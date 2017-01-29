@@ -52,6 +52,8 @@ public class MHResourceConfig extends ResourceConfig
         register(PatientCaregiverInternalResource.class);
         register(UserResource.class);
 
+        register(AuditTrailResource.class);
+
     }
 }
 

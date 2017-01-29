@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -33,22 +34,31 @@ public class PatientCaregiverInternalDao {
         em.remove(entity);
     }
 
-    public List<PatientCaregiverInternalEntity>  findByUserAndHospitalNamedQuery(int hospitalId, int userId){
-        Query query  = em.createNamedQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_USER_AND_HOSPITAL);
-        query.setParameter("hospitalId",  hospitalId);
+    public PatientCaregiverInternalEntity  findNamedNativeByUserAndPatient(int userId, int patientId){
+        TypedQuery<PatientCaregiverInternalEntity> query = em.createNamedQuery(PatientCaregiverInternalEntity.NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT, PatientCaregiverInternalEntity.class);
         query.setParameter("userId",  userId);
+        query.setParameter("patientId",  patientId);
+        return query.getSingleResult();
+    }
+
+    public List<PatientCaregiverInternalEntity>  findNamedNativeByUserAndHospital(int userId, int hospitalId){
+        TypedQuery<PatientCaregiverInternalEntity> query  = em.createNamedQuery(PatientCaregiverInternalEntity.NAMED_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL, PatientCaregiverInternalEntity.class);
+        query.setParameter("userId",  userId);
+        query.setParameter("hospitalId",  hospitalId);
         return query.getResultList();
     }
 
-    public List<PatientCaregiverInternalEntity> findByHospitalDynamicQuery(int hospitalId){
-        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_HOSPITAL, PatientCaregiverInternalEntity.class);
-        q.setParameter("hospitalId", hospitalId);
-        return q.getResultList();
+    public List<PatientCaregiverInternalEntity> findDynamicNativeByUserAndHospital(int userId, int hospitalId){
+        Query query = em.createNativeQuery(PatientCaregiverInternalEntity.DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_HOSPITAL, PatientCaregiverInternalEntity.class);
+        query.setParameter("userId",  userId);
+        query.setParameter("hospitalId", hospitalId);
+        return query.getResultList();
     }
 
-    public Integer findCaregiverIdByUserDynamicQuery(int userId){
-        Query q = em.createNativeQuery(PatientCaregiverInternalEntity.CAREGIVER_FIND_BY_USER);
-        q.setParameter("userId", userId);
-        return (Integer) q.getSingleResult();
+    public Integer findDynamicNativeByUserAndPatient(int userId, int patientId){
+        Query query = em.createNativeQuery(PatientCaregiverInternalEntity.DYNAMIC_NATIVE_CAREGIVER_FIND_BY_USER_AND_PATIENT);
+        query.setParameter("userId", userId);
+        query.setParameter("patientId",  patientId);
+        return (Integer) query.getSingleResult();
     }
 }

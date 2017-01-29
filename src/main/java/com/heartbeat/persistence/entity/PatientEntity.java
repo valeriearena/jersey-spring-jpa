@@ -42,7 +42,7 @@ public class PatientEntity {
     @JoinColumn(name = "wardId")
     private HierarchyEntity hierarchyEntity;
 
-    @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="patientEntity", fetch = FetchType.EAGER)
     private List<PatientCaregiverInternalEntity> caregivers;
 
     public Integer getPatientId() {

@@ -68,7 +68,7 @@ public class UserEntity {
     private HierarchyEntity hierarchyEntity;
 
     @JsonIgnore
-    @OneToMany(mappedBy="userEntity", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="userEntity")
     private List<PatientCaregiverInternalEntity> assignments;
 
     public Integer getUserId() {

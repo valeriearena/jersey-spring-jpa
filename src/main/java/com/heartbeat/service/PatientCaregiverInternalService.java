@@ -20,16 +20,20 @@ public class PatientCaregiverInternalService {
     @Autowired
     private PatientCaregiverInternalDao patientCaregiverInternalDao;
 
-    public List<PatientCaregiverInternalEntity> findByUserAndHospitalNamedQuery(int hospitalId, int userId){
-        return patientCaregiverInternalDao.findByUserAndHospitalNamedQuery(hospitalId, userId);
+    public PatientCaregiverInternalEntity findNamedNativeByUserAndPatient(int userId, int patientId){
+        return patientCaregiverInternalDao.findNamedNativeByUserAndPatient(userId, patientId);
     }
 
-    public List<PatientCaregiverInternalEntity> findByHospitalDynamicQuery(int hospitalId){
-        return patientCaregiverInternalDao.findByHospitalDynamicQuery(hospitalId);
+    public List<PatientCaregiverInternalEntity> findNamedNativeByUserAndHospital(int userId, int hospitalId){
+        return patientCaregiverInternalDao.findNamedNativeByUserAndHospital(userId, hospitalId);
     }
 
-    public Integer findCaregiverIdByUserDynamicQuery(int userId){
-        return patientCaregiverInternalDao.findCaregiverIdByUserDynamicQuery(userId);
+    public List<PatientCaregiverInternalEntity> findDynamicNativeByUserAndHospital(int userId, int hospitalId){
+        return patientCaregiverInternalDao.findDynamicNativeByUserAndHospital(userId, hospitalId);
+    }
+
+    public Integer findDynamicNativeByUserAndPatient(int userId, int patientId){
+        return patientCaregiverInternalDao.findDynamicNativeByUserAndPatient(userId, patientId);
     }
 
 
