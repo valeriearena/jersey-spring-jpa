@@ -52,8 +52,6 @@ public class MHResourceConfig extends ResourceConfig
         register(CaregiverResource.class);
         register(UserResource.class);
 
-        register(AuditTrailResource.class);
-
     }
 }
 

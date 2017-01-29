@@ -1,6 +1,5 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.HierarchyDao;
 import com.heartbeat.persistence.UserDao;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.slf4j.Logger;
@@ -18,9 +17,6 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private HierarchyDao hierarchyDao;
 
     public UserEntity find(int userId){
 

@@ -32,6 +32,6 @@ dependencies {
 
     testCompile 'org.springframework:spring-test:4.3.4.RELEASE'
     testCompile 'com.h2database:h2:1.4.182'
-
+    testCompile 'org.mockito:mockito-all:1.9.5'
     testCompile 'junit:junit:4.12'
 }

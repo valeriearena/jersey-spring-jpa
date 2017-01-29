@@ -1,5 +1,6 @@
-package com.heartbeat.persistence;
+package com.heartbeat.persistence.dao;
 
+import com.heartbeat.persistence.UserDao;
 import com.heartbeat.persistence.entity.UserEntity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
