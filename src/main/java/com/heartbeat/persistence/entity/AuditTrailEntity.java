@@ -13,7 +13,8 @@ public class AuditTrailEntity {
     public enum AuditTrailEnum{
         START_ASSIGNMENT,
         END_ASSSIGNMENT,
-        REMOVE_ASSIGNMENT;
+        START_ASSIGNMENT_WITH_ROLE,
+        END_ASSIGNMENT_WITH_ROLE;
     }
 
     @Id

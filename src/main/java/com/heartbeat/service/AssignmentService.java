@@ -6,6 +6,7 @@ import com.heartbeat.persistence.dao.PatientDao;
 import com.heartbeat.persistence.dao.UserDao;
 import com.heartbeat.persistence.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -28,6 +29,7 @@ public class AssignmentService {
     private PatientDao patientDao;
 
     @Autowired
+    @Qualifier("HBPatientCaregiverInternal")
     private CaregiverDao caregiverDao;
 
     @Autowired
@@ -117,6 +119,9 @@ public class AssignmentService {
             UserEntity userEntity = userDao.find(userId);
             PatientEntity patientEntity = patientDao.find(patientId);
 
+            AuditTrailEntity auditTrailStart = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.START_ASSIGNMENT_WITH_ROLE);
+            auditTrailDao.persist(auditTrailStart);
+
             CaregiverEntity caregiverEntity = new CaregiverEntity();
             caregiverEntity.setThirdPartySource("MH_STAFF_ASSIGNMENTS");
 
@@ -130,6 +135,10 @@ public class AssignmentService {
             caregiverEntity.getRoles().add(role);
 
             caregiverDao.persist(caregiverEntity);
+
+            AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSIGNMENT_WITH_ROLE);
+            auditTrailDao.persist(auditTrailEnd);
+
 
 
             return true;

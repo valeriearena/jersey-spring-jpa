@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by valerie on 1/24/17.
  */
-@Repository
+@Repository(value = "HBPatientCaregiverInternal")
 public class CaregiverDao {
 
     @PersistenceContext
