@@ -59,7 +59,8 @@ public class CaregiverEntity {
     private PatientEntity patientEntity;
 
     @JsonIgnore
-    @OneToMany(mappedBy="caregiverEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy="caregiverEntity")
+//    @OneToMany(mappedBy="caregiverEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CaregiverRoleEntity> roles = new ArrayList<>();
 
     public Integer getId() {

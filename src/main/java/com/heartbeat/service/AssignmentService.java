@@ -1,9 +1,6 @@
 package com.heartbeat.service;
 
-import com.heartbeat.persistence.dao.AuditTrailDao;
-import com.heartbeat.persistence.dao.CaregiverDao;
-import com.heartbeat.persistence.dao.PatientDao;
-import com.heartbeat.persistence.dao.UserDao;
+import com.heartbeat.persistence.dao.*;
 import com.heartbeat.persistence.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,11 +29,18 @@ public class AssignmentService {
     @Qualifier("HBPatientCaregiverInternal")
     private CaregiverDao caregiverDao;
 
+
+    @Autowired
+    private CaregiverRoleDao caregiverRoleDao;
+
     @Autowired
     private AuditTrailDao auditTrailDao;
 
     @Resource
     private JpaTransactionManager transactionManager;
+
+//    @Value("${my.config.property.key}")
+//    private String someKeyValue;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean assignPatientCmt(int userId, int patientId) {
@@ -59,6 +63,7 @@ public class AssignmentService {
             role.setRoleId(1);
 
             caregiverDao.persist(caregiverEntity);
+            caregiverRoleDao.persist(role);
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSSIGNMENT);
             auditTrailDao.persist(auditTrailEnd);
@@ -135,6 +140,7 @@ public class AssignmentService {
             caregiverEntity.getRoles().add(role);
 
             caregiverDao.persist(caregiverEntity);
+            caregiverRoleDao.persist(role);
 
             AuditTrailEntity auditTrailEnd = buildAudit(userEntity, patientEntity, AuditTrailEntity.AuditTrailEnum.END_ASSIGNMENT_WITH_ROLE);
             auditTrailDao.persist(auditTrailEnd);

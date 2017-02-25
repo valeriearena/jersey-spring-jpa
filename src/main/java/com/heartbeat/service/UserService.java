@@ -46,9 +46,10 @@ public class UserService {
     }
 
     public UserEntity findAssignments(int userId){
-        return userDao.findAssignments(userId);
 
+        return userDao.findAssignments(userId);
     }
+
     public Integer findCount(String likeUserName){
 
         return userDao.findUserCount(likeUserName);
