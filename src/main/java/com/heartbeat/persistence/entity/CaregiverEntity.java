@@ -44,7 +44,7 @@ public class CaregiverEntity {
             "SELECT id FROM hb_patient_caregiver_internal WHERE userId = :userId AND patientId = :patientId";
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
 
     private String thirdPartySource;
