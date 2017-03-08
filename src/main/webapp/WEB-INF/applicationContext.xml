@@ -26,7 +26,7 @@
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="database" value="SQL_SERVER" />
-                <property name="databasePlatform" value="org.hibernate.dialect.SQLServerDialect" />
+                <property name="databasePlatform" value="org.hibernate.dialect.SQLServer2012Dialect" />
             </bean>
         </property>
     </bean>

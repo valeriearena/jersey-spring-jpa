@@ -18,6 +18,7 @@ public class AuditTrailEntity {
     }
 
     @Id
+    //@GeneratedValue(strategy=GenerationType.SEQUENCE)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "trailId")
     private int trailId;
