@@ -1,4 +1,4 @@
-# jersey-spring-jpa
+# tomcat-jersey-spring-jpa-mini-poc
 
 Patient Resource <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/patient/17 <br/>
