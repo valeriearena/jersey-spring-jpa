@@ -1,5 +1,3 @@
-group 'jersey-spring-jpa'
-
 buildscript {
     repositories {
         mavenCentral()
