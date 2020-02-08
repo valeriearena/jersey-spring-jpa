@@ -1,4 +1,4 @@
-# Spring Boot app with Jersey resources and JPA repoistories.
+# Spring Boot app with Jersey resources and JPA repositories.
 
 Patient Resource <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/patient/17 <br/>
