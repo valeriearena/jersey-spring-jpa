@@ -1,5 +1,7 @@
 # tomcat-jersey-spring-jpa-mini-poc
 
+Spring Boot app with Jersey resources and JPA repoistories.
+
 Patient Resource <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/patient/17 <br/>
 
