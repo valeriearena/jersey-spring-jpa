@@ -1,5 +1,5 @@
 # mhb-poc-spring-boot-jersey-jpa
-Spring Boot app with Jersey and JPA.
+Spring Boot app with Jersey and JPA packed up as a WAR artifact.
 
 Patient Resource <br/>
 http://localhost:8080/jersey-spring-jpa/icapi/clinical/patient/17 <br/>
