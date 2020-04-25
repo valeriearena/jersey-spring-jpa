@@ -1,4 +1,4 @@
-# mhb-poc-spring-boot-jersey-jpa
+# spring-boot-jersey-jpa
 Spring Boot app with Jersey and JPA packed up as a WAR artifact.
 
 Patient Resource <br/>
